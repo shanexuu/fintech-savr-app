@@ -8,6 +8,7 @@ import {
   Button,
 } from 'react-native'
 import React from 'react'
+import { Redirect, router } from 'expo-router'
 
 const OnboardingItem = ({
   item,
@@ -19,7 +20,7 @@ const OnboardingItem = ({
 }) => {
   const { width } = useWindowDimensions()
   const handleSkip = () => {
-    navigation.navigate('SignUp')
+    router.push('/sign-up')
   }
   return (
     <View
@@ -27,9 +28,10 @@ const OnboardingItem = ({
       style={[{ width, backgroundColor }]}
     >
       <Image
-        className="justify-center object-contain mb-6 mt-4"
+        className="justify-center object-contain mb-6 mt-4 "
         source={item.image}
         reziseMode="container"
+        style={{ width: 349, height: 349 }}
       />
       <View className="flex">
         <Text className="text-4xl font-bold text-center mb-6">
@@ -44,15 +46,9 @@ const OnboardingItem = ({
           className="flex justify-center items-center"
         >
           <Text style={styles.buttonText}>
-            {isLastSlide ? 'Sign Up' : 'Next'}
+            {isLastSlide ? 'Get Started' : 'Next'}
           </Text>
         </TouchableOpacity>
-        {!isLastSlide && (
-          <Button
-            title="Skip"
-            onPress={handleSkip}
-          />
-        )}
       </View>
     </View>
   )

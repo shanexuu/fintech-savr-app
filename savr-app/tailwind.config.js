@@ -1,13 +1,17 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './App.{js,jsx,ts,tsx}',
-    './app/**/*.{js,jsx,ts,tsx}', // Include all JS, JSX, TS, and TSX files in the app folder
-    './components/**/*.{js,jsx,ts,tsx}', // Include all JS, JSX, TS, and TSX files in the components folder]
-    './app/(tabs)/index.tsx',
+    ['./app/**/*.{js,jsx,ts,tsx}', './components/**/*.{js,jsx,ts,tsx}'],
   ],
   theme: {
     extend: {
+      colors: {
+        primary: '#2E2E2E',
+
+        gray: {
+          100: '#878787',
+        },
+      },
       fontFamily: {
         pthin: ['Poppins-Thin', 'sans-serif'],
         pextralight: ['Poppins-ExtraLight', 'sans-serif'],

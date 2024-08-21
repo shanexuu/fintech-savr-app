@@ -2,6 +2,7 @@ import { View, Text, FlatList, Animated, StatusBar } from 'react-native'
 import React, { useState, useRef, useEffect } from 'react'
 import slides from '../assets/slides'
 import Paginator from './Paginator'
+import { Redirect, router } from 'expo-router'
 
 import OnboardingItem from './OnboardingItem'
 
@@ -26,7 +27,7 @@ const Onboarding = ({ onBackgroundColorChange, navigation }) => {
     if (currentIndex < slides.length - 1) {
       slidesRef.current.scrollToIndex({ index: currentIndex + 1 })
     } else {
-      navigation.navigate('SignUp')
+      router.push('/sign-in')
     }
   }
 
