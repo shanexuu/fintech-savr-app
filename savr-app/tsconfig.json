@@ -15,6 +15,7 @@
     "components/OnboardingItem.jsx",
     "components/Paginator.jsx",
     "app/index.jsx",
-    "app/_layout.jxs"
+    "app/_layout.jxs",
+    "app/_layout.jsx"
   ]
 }
