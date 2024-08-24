@@ -1,8 +1,57 @@
-import { Slot, SplashScreen, Stack } from 'expo-router'
+import { Slot, SplashScreen, Stack, useRouter, useSegments } from 'expo-router'
+import { ClerkProvider, ClerkLoaded, useAuth } from '@clerk/clerk-expo'
 import { useFonts } from 'expo-font'
 import { useEffect } from 'react'
+import * as SecureStore from 'expo-secure-store'
 
 SplashScreen.preventAutoHideAsync()
+
+const InitialLayout = () => {
+  const { isLoaded, isSignedIn } = useAuth()
+  const segments = useSegments()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!isLoaded) return
+
+    const inTabsGroup = segments[0] === '(auth)'
+
+    console.log('User changed: ', isSignedIn)
+
+    if (isSignedIn && !inTabsGroup) {
+      router.replace('/home')
+    } else if (!isSignedIn) {
+      router.replace('/sign-in')
+    }
+  }, [isSignedIn])
+
+  return <Slot />
+}
+
+const tokenCache = {
+  async getToken(key) {
+    try {
+      return SecureStore.getItemAsync(key)
+    } catch (err) {
+      return null
+    }
+  },
+  async saveToken(key, value) {
+    try {
+      return SecureStore.setItemAsync(key, value)
+    } catch (err) {
+      return
+    }
+  },
+}
+
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY
+
+if (!publishableKey) {
+  throw new Error(
+    'Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env'
+  )
+}
 
 const RootLayout = () => {
   const [fontsLoaded, error] = useFonts({
@@ -22,20 +71,12 @@ const RootLayout = () => {
   }, [fontsLoaded, error])
 
   return (
-    <Stack>
-      <Stack.Screen
-        name="(tabs)"
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="(auth)"
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="index"
-        options={{ headerShown: false }}
-      />
-    </Stack>
+    <ClerkProvider
+      tokenCache={tokenCache}
+      publishableKey={publishableKey}
+    >
+      <InitialLayout />
+    </ClerkProvider>
   )
 }
 

@@ -2,8 +2,15 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { Redirect, Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
+import { useAuth } from '@clerk/clerk-expo'
 
 const AuthLayout = () => {
+  const { isSignedIn } = useAuth()
+
+  if (isSignedIn) {
+    return <Redirect href={'/home'} />
+  }
+
   return (
     <>
       <Stack>
@@ -13,6 +20,10 @@ const AuthLayout = () => {
         />
         <Stack.Screen
           name="sign-up"
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="profile"
           options={{ headerShown: false }}
         />
       </Stack>
