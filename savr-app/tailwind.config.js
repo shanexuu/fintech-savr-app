@@ -12,7 +12,7 @@ module.exports = {
           200: '#232533',
         },
         gray: {
-          100: '#aeaeae',
+          100: '#545454',
         },
       },
       fontFamily: {

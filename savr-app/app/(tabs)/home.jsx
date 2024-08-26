@@ -1,7 +1,8 @@
-import { View, Text, Button } from 'react-native'
+import { View, Text, Button, FlatList } from 'react-native'
 import React from 'react'
 import { Link, useRouter } from 'expo-router'
 import { useUser, useClerk } from '@clerk/clerk-expo'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const Home = () => {
   const { signOut } = useClerk()
@@ -15,14 +16,16 @@ const Home = () => {
   const username = user?.username || user?.firstName || 'Anonymous'
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Hey, {username}! </Text>
+    <SafeAreaView>
+      <View>
+        <Text>Hey, {username}! </Text>
 
-      <Button
-        title="Sign Out"
-        onPress={handleSignOut}
-      />
-    </View>
+        <Button
+          title="Sign Out"
+          onPress={handleSignOut}
+        />
+      </View>
+    </SafeAreaView>
   )
 }
 
