@@ -13,7 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '../../constants'
 import { CustomButton, FormField } from '../../components'
 import { Link, router } from 'expo-router'
-import { useSignIn } from '@clerk/clerk-expo'
+import { useSignIn, useClerk } from '@clerk/clerk-expo'
 import Spinner from 'react-native-loading-spinner-overlay'
 
 const SignIn = () => {
@@ -53,7 +53,7 @@ const SignIn = () => {
 
   return (
     <SafeAreaView className="h-full">
-      <ScrollView>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View className="w-full flex justify-center h-full px-4 my-3">
           <Image
             source={images.logo}
@@ -67,7 +67,7 @@ const SignIn = () => {
 
           <FormField
             title="Email"
-            utoCapitalize="none"
+            autoCapitalize="none"
             value={emailAddress}
             handleChangeText={setEmailAddress}
             otherStyles="mt-7"
@@ -80,23 +80,34 @@ const SignIn = () => {
             otherStyles="mt-7"
             keyboardType="password"
           />
+
           <CustomButton
             title="Sign In"
             handlePress={onSignInPress}
             containerStyles="mt-7"
           />
-          <View className="flex justify-center pt-5 flex-row gap-2">
+
+          <View className="flex justify-center flex-row mt-5">
+            <Link
+              className="text-lg font-medium text-black-200"
+              href="/reset-password"
+            >
+              Forgot Password?
+            </Link>
+          </View>
+
+          <View style={{ flex: 1 }} />
+
+          <View className="flex justify-center pt-5 flex-row gap-2 mb-6">
             <Text className="text-lg text-gray-100 font-regular">
               Don't have an account?
             </Text>
             <Link
               href="/sign-up"
-              className="text-lg font-regular"
+              className="text-lg font-medium text-primary"
             >
               Sign up
             </Link>
-            <Link href="/home">Home</Link>
-            <Link href="/profile">Profile</Link>
           </View>
         </View>
       </ScrollView>

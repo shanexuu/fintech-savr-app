@@ -4,6 +4,7 @@ import transaction from '../assets/images/bank-fill.png'
 import more from '../assets/images/dots-three-bold.png'
 import eye from '../assets/images/eye.png'
 import eyeHide from '../assets/images/eye-slash.png'
+import key from '../assets/images/lock-key.png'
 
 export default {
   home,
@@ -12,4 +13,5 @@ export default {
   more,
   eye,
   eyeHide,
+  key,
 }

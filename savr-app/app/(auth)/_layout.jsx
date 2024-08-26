@@ -26,6 +26,10 @@ const AuthLayout = () => {
           name="profile"
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="reset-password"
+          options={{ headerShown: false }}
+        />
       </Stack>
       <StatusBar
         backgroundColor="#fff"
