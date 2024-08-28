@@ -75,7 +75,7 @@ const ForgotPasswordPage = () => {
           // the newly created session (user is now signed in)
           setActive({ session: result.createdSessionId })
           setError('')
-          router.replace('/')
+          router.push('/success')
         } else {
           console.log(result)
         }

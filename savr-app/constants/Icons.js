@@ -5,6 +5,8 @@ import more from '../assets/images/dots-three-bold.png'
 import eye from '../assets/images/eye.png'
 import eyeHide from '../assets/images/eye-slash.png'
 import key from '../assets/images/lock-key.png'
+import bell from '../assets/images/bell.png'
+import settings from '../assets/images/dots-three.png'
 
 export default {
   home,
@@ -14,4 +16,6 @@ export default {
   eye,
   eyeHide,
   key,
+  bell,
+  settings,
 }

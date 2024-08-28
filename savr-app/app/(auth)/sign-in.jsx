@@ -15,6 +15,7 @@ import { CustomButton, FormField } from '../../components'
 import { Link, router } from 'expo-router'
 import { useSignIn, useClerk } from '@clerk/clerk-expo'
 import Spinner from 'react-native-loading-spinner-overlay'
+import { useNavigation } from '@react-navigation/native'
 
 const SignIn = () => {
   const [isSubmitting, setSubmitting] = useState(false)
