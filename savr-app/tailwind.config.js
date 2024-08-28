@@ -5,7 +5,7 @@ module.exports = {
     extend: {
       colors: {
         primary: '#161622',
-
+        white: '#fff',
         black: {
           DEFAULT: '#000',
           100: '#1E1E2D',
@@ -13,6 +13,10 @@ module.exports = {
         },
         gray: {
           100: '#545454',
+        },
+        purple: {
+          DEFAULT: '#C0AFF4',
+          100: '#D9D8F7',
         },
       },
       fontFamily: {

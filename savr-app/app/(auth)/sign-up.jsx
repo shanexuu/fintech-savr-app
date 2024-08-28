@@ -20,6 +20,8 @@ const SignUp = () => {
 
   const [emailAddress, setEmailAddress] = useState('')
   const [password, setPassword] = useState('')
+  const [username, setUsername] = useState('')
+
   const [pendingVerification, setPendingVerification] = useState(false)
   const [code, setCode] = useState('')
   const [loading, setLoading] = useState(false)
@@ -34,6 +36,7 @@ const SignUp = () => {
     try {
       // Create the user on Clerk
       await signUp.create({
+        username,
         emailAddress,
         password,
       })
@@ -89,8 +92,8 @@ const SignUp = () => {
               </Text>
               <FormField
                 title="Username"
-                value={form.username}
-                handleChangeText={(e) => setForm({ ...form, username: e })}
+                value={username}
+                handleChangeText={setUsername}
                 otherStyles="mt-10"
               />
               <FormField
@@ -117,6 +120,13 @@ const SignUp = () => {
           {pendingVerification && (
             <>
               <View>
+                <Text className="text-5xl text-black mt-10 mb-4 font-regular">
+                  Please verify your email
+                </Text>
+                <Text className="text-base text-gray-100  font-regular">
+                  Please enter the 8 digit code sent to your email{' '}
+                  <Text className="text-primary font-bold">{emailAddress}</Text>
+                </Text>
                 <FormField
                   value={code}
                   handleChangeText={setCode}

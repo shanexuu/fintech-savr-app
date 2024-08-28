@@ -1,11 +1,14 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import { Redirect, Stack } from 'expo-router'
+import { Redirect, Stack, useRouter } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useAuth } from '@clerk/clerk-expo'
+import { useClerk } from '@clerk/clerk-expo'
 
 const AuthLayout = () => {
+  const router = useRouter()
   const { isSignedIn } = useAuth()
+  const { signOut } = useClerk()
 
   if (isSignedIn) {
     return <Redirect href={'/home'} />
@@ -28,6 +31,10 @@ const AuthLayout = () => {
         />
         <Stack.Screen
           name="reset-password"
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="success"
           options={{ headerShown: false }}
         />
       </Stack>

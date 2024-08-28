@@ -1,13 +1,28 @@
-import { View, Text } from 'react-native'
+import { View, Text, Button } from 'react-native'
 import React from 'react'
-import { Link } from 'expo-router'
+import { Link, useRouter } from 'expo-router'
+import { useUser, useClerk } from '@clerk/clerk-expo'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const More = () => {
+  const { signOut } = useClerk()
+  const router = useRouter()
+
+  const handleSignOut = async () => {
+    await signOut()
+    signOut({ redirectUrl: '/sign-in' })
+  }
+  const { user } = useUser()
+  const username = user?.username || user?.firstName || 'Anonymous'
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>More</Text>
-      <Link href="/(auth)/profile">Profile</Link>
-    </View>
+    <SafeAreaView>
+      <View>
+        <Button
+          title="Sign Out"
+          onPress={handleSignOut}
+        />
+      </View>
+    </SafeAreaView>
   )
 }
 
