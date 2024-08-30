@@ -61,7 +61,10 @@ const SignIn = () => {
             resizeMode="contain"
             className="w-[50px] h-[50px]"
           />
-          <Text className="text-7xl text-black mt-10 mb-4 font-regular">
+          <Text
+            className="text-7xl text-black mt-10 mb-4 font-pregular"
+            style={{ lineHeight: 80 }}
+          >
             Sign in
           </Text>
           <Spinner visible={loading} />

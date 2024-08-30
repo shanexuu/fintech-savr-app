@@ -34,8 +34,8 @@ const Home = () => {
           data={[{ id: 1 }]}
           keyExtractor={(item) => item.$id}
           ListHeaderComponent={() => (
-            <View className="flex my-6 px-4 space-y-6">
-              <View className="flex justify-between items-start flex-row mb-16">
+            <View className="flex">
+              <View className="flex my-6 px-4 space-y-6 justify-between items-start flex-row mb-16">
                 <View>
                   <View className="flex flex-row gap-4">
                     <View className="flex items-center justify-center w-12 h-12 bg-white rounded-full">
@@ -69,7 +69,7 @@ const Home = () => {
                 </View>
               </View>
 
-              <View className="flex flex-col justify-center items-center mb-8 h-20">
+              <View className="flex flex-col justify-center items-center mb-20 h-20  px-4">
                 <Text
                   className="text-5xl mb-4 font-pmedium"
                   style={{ lineHeight: 56 }}
@@ -79,6 +79,10 @@ const Home = () => {
                   {formatCurrency(balance)}
                 </Text>
                 <Text className="font-pregular">Total Balance</Text>
+              </View>
+
+              <View className="bg-white rounded-t-3xl">
+                <Text>Budget</Text>
               </View>
             </View>
           )}

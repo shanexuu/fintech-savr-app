@@ -87,7 +87,10 @@ const SignUp = () => {
           <Spinner visible={loading} />
           {!pendingVerification && (
             <>
-              <Text className="text-7xl text-black mt-10 mb-4 font-regular">
+              <Text
+                className="text-7xl text-black mt-10 mb-4 font-pregular"
+                style={{ lineHeight: 80 }}
+              >
                 Sign up
               </Text>
               <FormField
@@ -120,12 +123,14 @@ const SignUp = () => {
           {pendingVerification && (
             <>
               <View>
-                <Text className="text-5xl text-black mt-10 mb-4 font-regular">
+                <Text className="text-5xl text-black mt-10 mb-4 font-pregular">
                   Please verify your email
                 </Text>
                 <Text className="text-base text-gray-100  font-regular">
                   Please enter the 8 digit code sent to your email{' '}
-                  <Text className="text-primary font-bold">{emailAddress}</Text>
+                  <Text className="text-primary font-pbold">
+                    {emailAddress}
+                  </Text>
                 </Text>
                 <FormField
                   value={code}
@@ -144,12 +149,12 @@ const SignUp = () => {
           <View style={{ flex: 1 }} />
 
           <View className="flex justify-center pt-5 flex-row gap-2 mb-6">
-            <Text className="text-lg text-gray-100 font-regular">
+            <Text className="text-lg text-gray-100 font-pregular">
               Have an account already?
             </Text>
             <Link
               href="/sign-in"
-              className="text-lg font-medium text-primary"
+              className="text-lg font-pmedium text-primary"
             >
               Sign in
             </Link>

@@ -99,10 +99,13 @@ const ForgotPasswordPage = () => {
           <View className="flex justify-center">
             {!successfulCreation ? (
               <>
-                <Text className="text-7xl text-black mt-10 mb-4 font-regular">
+                <Text
+                  className="text-6xl text-black mt-10 mb-4 font-pregular"
+                  style={{ lineHeight: 80 }}
+                >
                   Forgot password?
                 </Text>
-                <Text className="text-base text-gray-100  mb-4 font-regular">
+                <Text className="text-base text-gray-100  mb-4 font-pregular">
                   Enter your email address and we will send you a link to reset
                   your password.
                 </Text>
@@ -119,7 +122,7 @@ const ForgotPasswordPage = () => {
                   containerStyles="mt-7"
                 />
                 <Link
-                  className="text-lg font-regular text-black-200 text-center mt-6"
+                  className="text-lg font-pregular text-black-200 text-center mt-6"
                   href="/sign-in"
                 >
                   Back to log in
