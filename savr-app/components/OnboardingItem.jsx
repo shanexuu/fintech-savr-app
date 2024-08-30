@@ -34,10 +34,12 @@ const OnboardingItem = ({
         style={{ width: 349, height: 349 }}
       />
       <View className="flex">
-        <Text className="text-4xl font-bold text-center mb-6">
+        <Text className="text-4xl font-pbold text-center mb-6">
           {item.title}
         </Text>
-        <Text className="text-base text-center mb-12">{item.description}</Text>
+        <Text className="text-base font-pregular text-center mb-12">
+          {item.description}
+        </Text>
 
         <TouchableOpacity
           onPress={scrollToNext}

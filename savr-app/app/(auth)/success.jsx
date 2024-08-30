@@ -18,7 +18,10 @@ const SuccessPage = () => {
     <SafeAreaView className="h-full">
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View className="w-full flex justify-center px-4 my-3">
-          <Text className="text-7xl text-black mt-10 mb-4 font-regular">
+          <Text
+            className="text-7xl text-black mt-10 mb-4 font-pregular"
+            style={{ lineHeight: 80 }}
+          >
             Success!
           </Text>
           <Text className="text-base text-gray-100  mb-4 font-regular">

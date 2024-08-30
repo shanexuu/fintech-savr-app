@@ -3,6 +3,9 @@ import { ClerkProvider, ClerkLoaded, useAuth } from '@clerk/clerk-expo'
 import { useFonts } from 'expo-font'
 import { useEffect } from 'react'
 import * as SecureStore from 'expo-secure-store'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
 
 SplashScreen.preventAutoHideAsync()
 
@@ -75,7 +78,9 @@ const RootLayout = () => {
       tokenCache={tokenCache}
       publishableKey={publishableKey}
     >
-      <InitialLayout />
+      <QueryClientProvider client={queryClient}>
+        <InitialLayout />
+      </QueryClientProvider>
     </ClerkProvider>
   )
 }
