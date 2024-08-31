@@ -1,21 +1,17 @@
-import { View, Text } from 'react-native'
-import React, { useEffect } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { View, Text, FlatList, Image, ScrollView } from 'react-native'
+import React from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context'
+
+import { TransactionList } from '../../components'
 
 const Transactions = () => {
-  useEffect(() => {
-    const tra = async () => {
-      const res = await fetch('api/info')
-      const data = await res.json()
-      console.log('akahu data:', data)
-    }
-    tra()
-  }, [])
-
   return (
-    <View>
-      <Text>Transactions</Text>
-    </View>
+    <SafeAreaView
+      edges={['top', 'left', 'right']}
+      className="h-full flex-1 bg-white"
+    >
+      <TransactionList />
+    </SafeAreaView>
   )
 }
 

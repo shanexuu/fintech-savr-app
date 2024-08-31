@@ -7,6 +7,7 @@ import eyeHide from '../assets/images/eye-slash.png'
 import key from '../assets/images/lock-key.png'
 import bell from '../assets/images/bell.png'
 import settings from '../assets/images/dots-three.png'
+import arrow from '../assets/images/arrow-circle-right-light.png'
 
 export default {
   home,
@@ -18,4 +19,5 @@ export default {
   key,
   bell,
   settings,
+  arrow,
 }

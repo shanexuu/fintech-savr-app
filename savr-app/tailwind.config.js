@@ -13,6 +13,7 @@ module.exports = {
         },
         gray: {
           100: '#545454',
+          200: '#F6F7F9',
         },
         purple: {
           DEFAULT: '#C0AFF4',

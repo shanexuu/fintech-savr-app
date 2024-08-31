@@ -4,6 +4,7 @@ import { Link, useRouter } from 'expo-router'
 import { useUser, useClerk } from '@clerk/clerk-expo'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images, icons } from '../../constants'
+import { TransactionList } from '../../components'
 
 const Home = () => {
   const { signOut } = useClerk()
@@ -28,15 +29,18 @@ const Home = () => {
   }
 
   return (
-    <SafeAreaView className="bg-purple-100">
+    <SafeAreaView
+      edges={['top', 'left', 'right']}
+      className="bg-purple-100 h-full flex-1"
+    >
       <View>
         <FlatList
           data={[{ id: 1 }]}
           keyExtractor={(item) => item.$id}
           ListHeaderComponent={() => (
             <View className="flex">
-              <View className="flex my-6 px-4 space-y-6 justify-between items-start flex-row mb-16">
-                <View>
+              <View className="flex my-6 px-4 justify-between items-center flex-row mb-16">
+                <View className="flex items-center">
                   <View className="flex flex-row gap-4">
                     <View className="flex items-center justify-center w-12 h-12 bg-white rounded-full">
                       <Image
@@ -45,7 +49,7 @@ const Home = () => {
                       />
                     </View>
 
-                    <View>
+                    <View className="felx items-center">
                       <Text className="font-pregular text-lg text-primary">
                         Hey, <Text className="font-psemibold">{username}</Text>
                       </Text>
@@ -55,7 +59,7 @@ const Home = () => {
                     </View>
                   </View>
                 </View>
-                <View className="flex flex-row gap-4 self-center">
+                <View className="flex flex-row gap-4 items-center">
                   <Image
                     source={icons.bell}
                     className="w-6 h-6"
@@ -69,9 +73,9 @@ const Home = () => {
                 </View>
               </View>
 
-              <View className="flex flex-col justify-center items-center mb-20 h-20  px-4">
+              <View className="flex flex-col justify-center items-center mb-16 h-20  px-4">
                 <Text
-                  className="text-5xl mb-4 font-pmedium"
+                  className="text-4xl mb-4 font-pmedium"
                   style={{ lineHeight: 56 }}
                   adjustsFontSizeToFit
                   numberOfLines={1}
@@ -81,8 +85,18 @@ const Home = () => {
                 <Text className="font-pregular">Total Balance</Text>
               </View>
 
-              <View className="bg-white rounded-t-3xl">
-                <Text>Budget</Text>
+              <View className="bg-white rounded-3xl p-2">
+                <View className="flex flex-row justify-between p-2 mt-5 items-center">
+                  <Text className=" font-psemibold text-xl text-primary ">
+                    Transactions
+                  </Text>
+                  <Image
+                    source={icons.arrow}
+                    className="w-7 h-7"
+                  />
+                </View>
+
+                <TransactionList />
               </View>
             </View>
           )}
