@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { View, Text, Image } from 'react-native'
+import { CategoryBtn } from '../components'
 
-const TransactionItem = ({ item, accountsData }) => {
-  const maxLength = 14
+const TransactionItem = memo(({ item, accountsData }) => {
+  const maxLength = 20
 
   // Function to truncate text if it exceeds the maximum length
   const truncateText = (text, length) => {
@@ -26,7 +27,7 @@ const TransactionItem = ({ item, accountsData }) => {
   const logoUri = item.meta?.logo || getAccountLogo(item._account)
 
   return (
-    <View className="flex flex-row justify-between items-center px-3 py-3 bg-white rounded-2xl m-2 shadow-md">
+    <View className="flex flex-row justify-between items-center px-3 py-6 bg-white rounded-3xl m-2 shadow-md mb-2">
       <View className="flex flex-row gap-2 items-center">
         <View>
           <Image
@@ -35,12 +36,12 @@ const TransactionItem = ({ item, accountsData }) => {
           />
         </View>
         <View>
-          <Text className="font-psemibold text-lg">
+          <Text className="font-pmedium text-base">
             {truncateText(item.description, maxLength)}
           </Text>
           <View className="flex flex-row gap-1">
             <Text
-              className={`font-psemibold text-sm ${
+              className={`font-pmedium text-sm ${
                 item.amount >= 0 ? 'text-green-500' : 'text-red-500'
               }`}
             >
@@ -48,7 +49,7 @@ const TransactionItem = ({ item, accountsData }) => {
                 ? `+$${item.amount}`
                 : `-$${Math.abs(item.amount)}`}
             </Text>
-            <Text>|</Text>
+            <Text className="text-gray-100 font-pbold">•</Text>
             <Text className="font-pregular text-sm text-gray-100">
               {formatDate(item.date)}
             </Text>
@@ -57,12 +58,15 @@ const TransactionItem = ({ item, accountsData }) => {
       </View>
 
       <View>
-        <Text className="font-psemibold text-sm">
-          {item.category?.groups?.personal_finance?.name}
-        </Text>
+        <CategoryBtn
+          icon={
+            item.category?.groups?.personal_finance?.name
+              ? item.category.groups.personal_finance.name.replace(/\s+/g, '_')
+              : 'Coin'
+          }
+        />
       </View>
     </View>
   )
-}
-
+})
 export default TransactionItem

@@ -2,9 +2,9 @@ import React from 'react'
 import { View, FlatList, Text } from 'react-native'
 import { useQuery } from '@tanstack/react-query'
 import Spinner from 'react-native-loading-spinner-overlay'
-import TransactionItem from './TransactionItem' // Import the TransactionItem component
+import TransactionItem from './TransactionItem'
 
-const TransactionList = () => {
+const TransactionList = ({ itemsToShow }) => {
   // Fetch transactions
   const {
     data: transactionsData,
@@ -39,14 +39,16 @@ const TransactionList = () => {
 
   return (
     <FlatList
-      data={transactionsData?.items}
+      data={transactionsData?.items?.slice(0, [itemsToShow])}
       renderItem={({ item }) => (
         <TransactionItem
           item={item}
           accountsData={accountsData}
         />
       )}
-      keyExtractor={(item) => item._id}
+      keyExtractor={(item) => item._id.toString()}
+      initialNumToRender={10}
+      windowSize={5}
     />
   )
 }

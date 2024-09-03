@@ -10,7 +10,7 @@ const Transactions = () => {
       edges={['top', 'left', 'right']}
       className="h-full flex-1 bg-white"
     >
-      <TransactionList />
+      <TransactionList itemsToShow="20" />
     </SafeAreaView>
   )
 }
