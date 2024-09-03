@@ -19,7 +19,14 @@ module.exports = {
           DEFAULT: '#C0AFF4',
           100: '#D9D8F7',
         },
+        green: {
+          100: '#CCE4C4',
+        },
+        pink: {
+          100: '#EAD9D5',
+        },
       },
+
       fontFamily: {
         pthin: ['Poppins-Thin', 'sans-serif'],
         pextralight: ['Poppins-ExtraLight', 'sans-serif'],

@@ -1,10 +1,24 @@
-import { View, Text, Button, FlatList, Image } from 'react-native'
+import {
+  View,
+  Text,
+  Button,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from 'react-native'
 import React from 'react'
 import { Link, useRouter } from 'expo-router'
 import { useUser, useClerk } from '@clerk/clerk-expo'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images, icons } from '../../constants'
-import { TransactionList } from '../../components'
+import {
+  TransactionList,
+  AccountsData,
+  IncomeData,
+  ExpenseData,
+  RoundBtn,
+} from '../../components'
+import { useNavigation } from '@react-navigation/native'
 
 const Home = () => {
   const { signOut } = useClerk()
@@ -16,16 +30,11 @@ const Home = () => {
   }
   const { user } = useUser()
   const username = user?.username || user?.firstName || 'Anonymous'
-  const balance = 34950
 
-  const formatCurrency = (amount) => {
-    const formattedAmount = new Intl.NumberFormat('en-NZ', {
-      style: 'currency',
-      currency: 'NZD',
-      minimumFractionDigits: 2,
-    }).format(amount)
+  const navigation = useNavigation()
 
-    return formattedAmount.replace('NZ$', '').trim() + ' NZD'
+  const handlePress = () => {
+    navigation.navigate('transactions')
   }
 
   return (
@@ -74,29 +83,55 @@ const Home = () => {
               </View>
 
               <View className="flex flex-col justify-center items-center mb-16 h-20  px-4">
-                <Text
-                  className="text-4xl mb-4 font-pmedium"
-                  style={{ lineHeight: 56 }}
-                  adjustsFontSizeToFit
-                  numberOfLines={1}
-                >
-                  {formatCurrency(balance)}
+                <AccountsData />
+                <Text className="font-pregular text-gray-100">
+                  Total Balance
                 </Text>
-                <Text className="font-pregular">Total Balance</Text>
               </View>
 
-              <View className="bg-white rounded-3xl p-2">
-                <View className="flex flex-row justify-between p-2 mt-5 items-center">
-                  <Text className=" font-psemibold text-xl text-primary ">
-                    Transactions
-                  </Text>
-                  <Image
-                    source={icons.arrow}
-                    className="w-7 h-7"
-                  />
+              <View className="bg-white rounded-t-[50px] p-2">
+                <View className="felx flex-row justify-center h-48 gap-4 p-4">
+                  <View className="bg-gray-200  w-1/2 flex justify-center rounded-3xl items-center">
+                    <View className="flex flex-row items-center justify-center space-x-4">
+                      <RoundBtn
+                        icon="Income"
+                        imageStyles="h-6 w-6"
+                        containerStyles="h-10 w-10 bg-green-100"
+                      />
+                      <Text className="font-pmedium text-xl">Income</Text>
+                    </View>
+
+                    <IncomeData
+                      startDate="2024-08-01T01%3A00%3A00.000Z"
+                      endDate="2024-08-31T01%3A00%3A00.000Z"
+                    />
+                  </View>
+                  <View className="bg-gray-200  w-1/2 flex justify-center rounded-3xl items-center">
+                    <View className="flex flex-row items-center justify-center space-x-4">
+                      <RoundBtn
+                        icon="Expense"
+                        imageStyles="h-6 w-6"
+                        containerStyles="h-10 w-10 bg-pink-100"
+                      />
+                      <Text className="font-pmedium text-xl">Expense</Text>
+                    </View>
+
+                    <ExpenseData />
+                  </View>
                 </View>
 
-                <TransactionList />
+                <View className="flex flex-row justify-between p-2 mt-5 items-center mb-4">
+                  <Text className=" font-psemibold text-xl text-primary">
+                    Latest Transactions
+                  </Text>
+                  <TouchableOpacity onPress={handlePress}>
+                    <Text className="font-pregular text-primary text-base">
+                      See More
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+
+                <TransactionList itemsToShow="8" />
               </View>
             </View>
           )}

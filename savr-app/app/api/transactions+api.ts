@@ -12,7 +12,7 @@ export async function GET(request: Request) {
     }
 
     const response = await fetch(
-      'https://api.akahu.io/v1/transactions',
+      `https://api.akahu.io/v1/transactions`,
       options
     )
 
