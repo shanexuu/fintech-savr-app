@@ -30,7 +30,7 @@ const AccountsData = () => {
   return (
     <View>
       <Text
-        className="text-4xl mb-4 font-pmedium"
+        className="text-4xl font-pmedium"
         style={{ lineHeight: 56 }}
         adjustsFontSizeToFit
         numberOfLines={1}

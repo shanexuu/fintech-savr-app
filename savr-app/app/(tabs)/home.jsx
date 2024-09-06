@@ -82,56 +82,63 @@ const Home = () => {
                 </View>
               </View>
 
-              <View className="flex flex-col justify-center items-center mb-16 h-20  px-4">
+              <View className="flex flex-col justify-center items-center mb-24 h-20 px-4">
                 <AccountsData />
                 <Text className="font-pregular text-gray-100">
                   Total Balance
                 </Text>
               </View>
 
-              <View className="bg-white rounded-t-[50px] p-2">
-                <View className="felx flex-row justify-center h-48 gap-4 p-4">
-                  <View className="bg-gray-200  w-1/2 flex justify-center rounded-3xl items-center">
-                    <View className="flex flex-row items-center justify-center space-x-4">
+              <View className="bg-white relative my-6 px-4 justify-center items-center flex">
+                <View className="bg-white felx flex-row justify-center h-32 absolute -top-16 rounded-[30px] shadow-md w-full">
+                  <View className="flex justify-center w-1/2">
+                    <View className="flex flex-row w-full items-center">
                       <RoundBtn
                         icon="Income"
-                        imageStyles="h-6 w-6"
-                        containerStyles="h-10 w-10 bg-green-100"
+                        imageStyles="h-4 w-4"
+                        containerStyles="h-8 w-8 bg-green-100"
                       />
-                      <Text className="font-pmedium text-xl">Income</Text>
+                      <Text className="font-pmedium text-base text-gray-500 mx-2 h-8">
+                        Income
+                      </Text>
                     </View>
-
-                    <IncomeData
-                      startDate="2024-08-01T01%3A00%3A00.000Z"
-                      endDate="2024-08-31T01%3A00%3A00.000Z"
-                    />
+                    <View className="flex w-full justify-center content-center">
+                      <IncomeData
+                        startDate="2024-08-01T01%3A00%3A00.000Z"
+                        endDate="2024-08-31T01%3A00%3A00.000Z"
+                      />
+                    </View>
                   </View>
-                  <View className="bg-gray-200  w-1/2 flex justify-center rounded-3xl items-center">
-                    <View className="flex flex-row items-center justify-center space-x-4">
+
+                  <View className="flex justify-center">
+                    <View className="flex flex-row items-center">
                       <RoundBtn
                         icon="Expense"
-                        imageStyles="h-6 w-6"
-                        containerStyles="h-10 w-10 bg-pink-100"
+                        imageStyles="h-4 w-4"
+                        containerStyles="h-8 w-8 bg-pink-100"
                       />
-                      <Text className="font-pmedium text-xl">Expense</Text>
+                      <Text className="font-pmedium text-base h-8 text-gray-500 mx-2">
+                        Expenses
+                      </Text>
                     </View>
 
                     <ExpenseData />
                   </View>
                 </View>
 
-                <View className="flex flex-row justify-between p-2 mt-5 items-center mb-4">
-                  <Text className=" font-psemibold text-xl text-primary">
-                    Latest Transactions
-                  </Text>
-                  <TouchableOpacity onPress={handlePress}>
-                    <Text className="font-pregular text-primary text-base">
-                      See More
+                <View className="felx px-1 h-full">
+                  <View className="flex flex-row justify-between mt-28 items-center mb-4 w-full">
+                    <Text className=" font-psemibold text-xl text-primary">
+                      Latest Transactions
                     </Text>
-                  </TouchableOpacity>
+                    <TouchableOpacity onPress={handlePress}>
+                      <Text className="font-pregular text-primary text-base">
+                        More
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                  <TransactionList itemsToShow="8" />
                 </View>
-
-                <TransactionList itemsToShow="8" />
               </View>
             </View>
           )}

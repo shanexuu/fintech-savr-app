@@ -19,8 +19,11 @@ import Professional_Services from '../assets/images/pencil.png'
 import Transport from '../assets/images/car.png'
 import Utilities from '../assets/images/lightning.png'
 import Coin from '../assets/images/coin.png'
-import Income from '../assets/images/currency-dollar.png'
-import Expense from '../assets/images/basket.png'
+import Income from '../assets/images/arrow-down.png'
+import Expense from '../assets/images/arrow-up.png'
+import Add from '../assets/images/plus.png'
+import Previous from '../assets/images/caret-left.png'
+import Next from '../assets/images/caret-right.png'
 
 export default {
   home,
@@ -46,4 +49,7 @@ export default {
   Coin,
   Income,
   Expense,
+  Add,
+  Previous,
+  Next,
 }

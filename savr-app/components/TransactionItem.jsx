@@ -27,7 +27,7 @@ const TransactionItem = memo(({ item, accountsData }) => {
   const logoUri = item.meta?.logo || getAccountLogo(item._account)
 
   return (
-    <View className="flex flex-row justify-between items-center px-3 py-6 bg-white rounded-3xl m-2 shadow-md mb-2">
+    <View className="flex flex-row justify-between items-center px-3 py-6 bg-white rounded-3xl shadow-md mb-6 w-full">
       <View className="flex flex-row gap-2 items-center">
         <View>
           <Image
