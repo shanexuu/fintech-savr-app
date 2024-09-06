@@ -10,6 +10,8 @@ npm-debug.*
 *.orig.*
 web-build/
 
+utils/SupabaseConfig.jsx
+
 # macOS
 .DS_Store
 

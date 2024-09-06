@@ -25,6 +25,8 @@ module.exports = {
         pink: {
           100: '#EAD9D5',
         },
+        yellow: { 100: '#E9D27D' },
+        brown: { 100: '#D0AF92' },
       },
 
       fontFamily: {

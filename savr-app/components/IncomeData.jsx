@@ -47,8 +47,8 @@ const IncomeData = ({ startDate, endDate, textStyles }) => {
 
   return (
     <View>
-      <Text className={`text-primary font-pmedium text-2xl ${textStyles}`}>
-        +${totalAmount}
+      <Text className={`text-primary font-pmedium text-xl ${textStyles}`}>
+        ${totalAmount}
       </Text>
       {/* <FlatList
         data={incomeData?.items?.flatMap((item) => item.transactions)}

@@ -31,8 +31,8 @@ const ExpenseData = ({ startDate, endDate, textStyles }) => {
 
   return (
     <View>
-      <Text className={`text-primary font-pmedium text-2xl ${textStyles}`}>
-        -${Math.abs(totalExpenses.toFixed(2))}
+      <Text className={`text-primary font-pmedium text-xl ${textStyles}`}>
+        ${Math.abs(totalExpenses.toFixed(2))}
       </Text>
     </View>
   )

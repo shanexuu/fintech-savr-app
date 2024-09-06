@@ -34,6 +34,12 @@ const TabsLayout = () => {
           tabBarStyle: {
             backgroundColor: '#fff',
             height: 100,
+            borderTopWidth: 0,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: -8 }, // Position the shadow (for iOS)
+            shadowOpacity: 0.04,
+            shadowRadius: 5, // Set the blur radius of the shadow (for iOS)
+            elevation: 10, // Add elevation for shadow (for Android)
           },
         }}
       >
@@ -56,7 +62,14 @@ const TabsLayout = () => {
           name="budget"
           options={{
             title: 'Budget',
-            headerShown: false,
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: '#fff',
+            },
+            headerTitleStyle: {
+              fontFamily: 'Poppins-SemiBold',
+              fontSize: '20px',
+            },
             tabBarIcon: ({ color, focused }) => (
               <TabIcon
                 icon={icons.budget}
@@ -71,7 +84,17 @@ const TabsLayout = () => {
           name="transactions"
           options={{
             title: 'Transactions',
-            headerShown: false,
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: '#fff',
+              elevation: 0,
+              shadowOpacity: 0,
+              borderBottomWidth: 0,
+            },
+            headerTitleStyle: {
+              fontFamily: 'Poppins-SemiBold',
+              fontSize: '20px',
+            },
             tabBarIcon: ({ color, focused }) => (
               <TabIcon
                 icon={icons.transaction}
@@ -86,7 +109,17 @@ const TabsLayout = () => {
           name="more"
           options={{
             title: 'More',
-            headerShown: false,
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: '#fff',
+              elevation: 0,
+              shadowOpacity: 0,
+              borderBottomWidth: 0,
+            },
+            headerTitleStyle: {
+              fontFamily: 'Poppins-SemiBold',
+              fontSize: '20px',
+            },
             tabBarIcon: ({ color, focused }) => (
               <TabIcon
                 icon={icons.more}

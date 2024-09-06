@@ -6,12 +6,9 @@ import { TransactionList } from '../../components'
 
 const Transactions = () => {
   return (
-    <SafeAreaView
-      edges={['top', 'left', 'right']}
-      className="h-full flex-1 bg-white"
-    >
+    <View className="h-full bg-white">
       <TransactionList itemsToShow="20" />
-    </SafeAreaView>
+    </View>
   )
 }
 

@@ -7,6 +7,11 @@ import CategoryBtn from './CategoryBtn'
 import AccountsData from './AccountsData'
 import IncomeData from './IncomeData'
 import ExpenseData from './ExpenseData'
+import AddBtn from './navigation/AddBtn'
+import DonutChart from './DonutChart'
+import DonutPath from './DonutPath'
+import RenderItem from './RenderItem'
+import CircularChart from './CircularChart'
 
 export {
   Onboarding,
@@ -18,4 +23,9 @@ export {
   AccountsData,
   IncomeData,
   ExpenseData,
+  AddBtn,
+  DonutChart,
+  DonutPath,
+  RenderItem,
+  CircularChart,
 }
