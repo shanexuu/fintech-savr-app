@@ -62,7 +62,8 @@ const TabsLayout = () => {
           name="budget"
           options={{
             title: 'Budget',
-            headerShown: true,
+            headerShown: false,
+
             headerStyle: {
               backgroundColor: '#fff',
             },

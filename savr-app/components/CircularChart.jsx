@@ -1,22 +1,39 @@
 import { View, Text } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import PieChart from 'react-native-pie-chart'
+import { Colors } from '../constants/Colors'
 
 const CircularChart = () => {
-  const widthAndHeight = 250
-  const []
-  const series = [123, 321, 123, 789, 537]
-  const sliceColor = ['#fbd203', '#ffb300', '#ff9100', '#ff6c00', '#ff3c00']
+  const widthAndHeight = 300
+  const [values, setValues] = useState([1])
+  const [sliceColor, setSliceColor] = useState([Colors.dark.text])
 
   return (
-    <View>
-      <PieChart
-        widthAndHeight={widthAndHeight}
-        series={series}
-        sliceColor={sliceColor}
-        coverRadius={0.45}
-        coverFill={'#FFF'}
-      />
+    <View className="relative w-full justify-center items-center bg-white">
+      <View className="flex absolute bottom-1/2 justify-center items-center z-50">
+        <Text
+          className="font-pmedium text-5xl"
+          style={{ lineHeight: 80 }}
+        >
+          $0
+        </Text>
+        <Text className="font-pregular text-xs text-gray-100">
+          Total Budget
+        </Text>
+      </View>
+      <View className="flex gap-8">
+        <PieChart
+          widthAndHeight={widthAndHeight}
+          series={values}
+          sliceColor={sliceColor}
+          coverRadius={0.75}
+          coverFill={'#FFF'}
+        />
+        <View className="w-full   flex flex-row justify-start gap-2 items-center">
+          <View className="bg-gray-300 h-8 w-8 rounded-full"></View>
+          <Text>NaN</Text>
+        </View>
+      </View>
     </View>
   )
 }

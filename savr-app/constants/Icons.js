@@ -24,6 +24,7 @@ import Expense from '../assets/images/arrow-up.png'
 import Add from '../assets/images/plus.png'
 import Previous from '../assets/images/caret-left.png'
 import Next from '../assets/images/caret-right.png'
+import Pencil from '../assets/images/pencil-simple.png'
 
 export default {
   home,
@@ -52,4 +53,5 @@ export default {
   Add,
   Previous,
   Next,
+  Pencil,
 }

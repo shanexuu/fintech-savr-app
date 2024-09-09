@@ -28,7 +28,38 @@ const InitialLayout = () => {
     }
   }, [isSignedIn])
 
-  return <Slot />
+  return (
+    <Stack>
+      <Stack.Screen
+        name="index"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="(tabs)"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="(auth)"
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="(budget)/add-income"
+        options={{
+          presentation: 'modal',
+          headerShown: true,
+          headerTitle: 'Add income',
+        }}
+      />
+      <Stack.Screen
+        name="(budget)/income-detail"
+        options={{
+          headerShown: false,
+          headerTitle: 'Income Detail',
+        }}
+      />
+    </Stack>
+  )
 }
 
 const tokenCache = {
