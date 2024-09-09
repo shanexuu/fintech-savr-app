@@ -18,4 +18,9 @@ export const Colors = {
     tabIconDefault: '#9BA1A6',
     tabIconSelected: tintColorDark,
   },
+  purple: {
+    main: '#C0AFF4',
+    light: '#D9D8F7',
+  },
+  color_list: ['#D9D8F7', '#CCE4C4', '#EAD9D5', '#E9D27D', '#D0AF92'],
 }

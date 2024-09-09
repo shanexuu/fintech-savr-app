@@ -12,6 +12,9 @@ import DonutChart from './DonutChart'
 import DonutPath from './DonutPath'
 import RenderItem from './RenderItem'
 import CircularChart from './CircularChart'
+import ColorPicker from './ColorPicker'
+import IncomeList from './IncomeList'
+import IncomeItem from './IncomeItem'
 
 export {
   Onboarding,
@@ -28,4 +31,7 @@ export {
   DonutPath,
   RenderItem,
   CircularChart,
+  ColorPicker,
+  IncomeList,
+  IncomeItem,
 }
