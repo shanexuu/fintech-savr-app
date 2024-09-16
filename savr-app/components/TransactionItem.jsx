@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, TouchableOpacity } from 'react-native'
 import { CategoryBtn } from '../components'
 
 const TransactionItem = memo(({ item, accountsData }) => {
@@ -27,46 +27,51 @@ const TransactionItem = memo(({ item, accountsData }) => {
   const logoUri = item.meta?.logo || getAccountLogo(item._account)
 
   return (
-    <View className="flex flex-row justify-between items-center px-3 py-6 bg-white rounded-3xl shadow-md mb-6 w-full">
-      <View className="flex flex-row gap-2 items-center">
-        <View>
-          <Image
-            source={{ uri: logoUri }}
-            className="w-10 h-10 rounded-full"
-          />
-        </View>
-        <View>
-          <Text className="font-pmedium text-base">
-            {truncateText(item.description, maxLength)}
-          </Text>
-          <View className="flex flex-row gap-1">
-            <Text
-              className={`font-pmedium text-sm ${
-                item.amount >= 0 ? 'text-green-500' : 'text-red-500'
-              }`}
-            >
-              {item.amount >= 0
-                ? `+$${item.amount}`
-                : `-$${Math.abs(item.amount)}`}
+    <TouchableOpacity>
+      <View className="flex flex-row justify-between items-center px-3 py-6 bg-white rounded-3xl shadow-md mb-6 w-full">
+        <View className="flex flex-row gap-2 items-center">
+          <View>
+            <Image
+              source={{ uri: logoUri }}
+              className="w-10 h-10 rounded-full"
+            />
+          </View>
+          <View>
+            <Text className="font-pmedium text-base">
+              {truncateText(item.description, maxLength)}
             </Text>
-            <Text className="text-gray-100 font-pbold">•</Text>
-            <Text className="font-pregular text-sm text-gray-100">
-              {formatDate(item.date)}
-            </Text>
+            <View className="flex flex-row gap-1">
+              <Text
+                className={`font-pmedium text-sm ${
+                  item.amount >= 0 ? 'text-green-500' : 'text-red-500'
+                }`}
+              >
+                {item.amount >= 0
+                  ? `+$${item.amount}`
+                  : `-$${Math.abs(item.amount)}`}
+              </Text>
+              <Text className="text-gray-100 font-pbold">•</Text>
+              <Text className="font-pregular text-sm text-gray-100">
+                {formatDate(item.date)}
+              </Text>
+            </View>
           </View>
         </View>
-      </View>
 
-      <View>
-        <CategoryBtn
-          icon={
-            item.category?.groups?.personal_finance?.name
-              ? item.category.groups.personal_finance.name.replace(/\s+/g, '_')
-              : 'Coin'
-          }
-        />
+        <View>
+          <CategoryBtn
+            icon={
+              item.category?.groups?.personal_finance?.name
+                ? item.category.groups.personal_finance.name.replace(
+                    /\s+/g,
+                    '_'
+                  )
+                : 'Coin'
+            }
+          />
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   )
 })
 export default TransactionItem

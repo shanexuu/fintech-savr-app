@@ -7,7 +7,7 @@ import { TransactionList } from '../../components'
 const Transactions = () => {
   return (
     <View className="h-full bg-white">
-      <TransactionList itemsToShow="20" />
+      <TransactionList itemsToShow="40" />
     </View>
   )
 }

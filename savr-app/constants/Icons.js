@@ -25,6 +25,8 @@ import Add from '../assets/images/plus.png'
 import Previous from '../assets/images/caret-left.png'
 import Next from '../assets/images/caret-right.png'
 import Pencil from '../assets/images/pencil-simple.png'
+import CircleDown from '../assets/images/circle-down.png'
+import Close from '../assets/images/x-bold.png'
 
 export default {
   home,
@@ -54,4 +56,6 @@ export default {
   Previous,
   Next,
   Pencil,
+  CircleDown,
+  Close,
 }

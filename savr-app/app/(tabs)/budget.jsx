@@ -35,14 +35,17 @@ const Budget = () => {
     setIncomeList(data)
     data && setLoading(false)
   }
-  const handlePress = () => {
+  const addIncome = () => {
     navigation.navigate('(budget)/add-income')
+  }
+  const addExpense = () => {
+    navigation.navigate('(budget)/add-expense')
   }
 
   return (
     <SafeAreaView
       edges={['top', 'left', 'right']}
-      className="bg-white h-full flex-1"
+      className="bg-white h-full flex"
     >
       <ScrollView
         refreshControl={
@@ -52,8 +55,8 @@ const Budget = () => {
           />
         }
       >
-        <View className="h-full bg-white">
-          <View className="px-5">
+        <View className="h-full bg-white ">
+          <View className="my-6 px-4">
             <View className=" bg-white w-full p-4 flex flex-row justify-between items-center mb-10 rounded-[50px] shadow-md">
               <TouchableOpacity>
                 <RoundBtn
@@ -76,12 +79,25 @@ const Budget = () => {
           <View className="flex items-center mb-10">
             <CircularChart />
           </View>
-          <View className="px-5">
-            <View className="flex flex-row justify-between items-center mb-4 w-full">
+          <View>
+            <View className="flex flex-row justify-between items-center my-6 px-4">
               <Text className=" font-psemibold text-xl text-primary">
                 Income Budget
               </Text>
-              <TouchableOpacity onPress={handlePress}>
+              <TouchableOpacity onPress={addIncome}>
+                <Text className="font-plight text-primary text-3xl">+</Text>
+              </TouchableOpacity>
+            </View>
+
+            <IncomeList incomeList={incomeList} />
+          </View>
+
+          <View>
+            <View className="flex flex-row justify-between items-center my-6 px-4">
+              <Text className=" font-psemibold text-xl text-primary">
+                Expense Budget
+              </Text>
+              <TouchableOpacity onPress={addExpense}>
                 <Text className="font-plight text-primary text-3xl">+</Text>
               </TouchableOpacity>
             </View>

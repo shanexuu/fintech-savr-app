@@ -15,6 +15,7 @@ import CircularChart from './CircularChart'
 import ColorPicker from './ColorPicker'
 import IncomeList from './IncomeList'
 import IncomeItem from './IncomeItem'
+import AccountList from './AccountList'
 
 export {
   Onboarding,
@@ -34,4 +35,5 @@ export {
   ColorPicker,
   IncomeList,
   IncomeItem,
+  AccountList,
 }

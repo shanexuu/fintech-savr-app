@@ -54,8 +54,26 @@ const InitialLayout = () => {
       <Stack.Screen
         name="(budget)/income-detail"
         options={{
-          headerShown: false,
+          headerShown: true,
           headerTitle: 'Income Detail',
+          headerBackTitle: 'Budget',
+        }}
+      />
+      <Stack.Screen
+        name="(budget)/add-expense"
+        options={{
+          presentation: 'modal',
+          headerShown: true,
+          headerTitle: 'Add expense',
+        }}
+      />
+
+      <Stack.Screen
+        name="(widgets)/accounts"
+        options={{
+          presentation: 'modal',
+          headerShown: false,
+          headerTitle: 'Add expense',
         }}
       />
     </Stack>
