@@ -5,8 +5,9 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  Modal,
 } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useRouter } from 'expo-router'
 import { useUser, useClerk } from '@clerk/clerk-expo'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -17,12 +18,14 @@ import {
   IncomeData,
   ExpenseData,
   RoundBtn,
+  AccountList,
 } from '../../components'
 import { useNavigation } from '@react-navigation/native'
 
 const Home = () => {
   const { signOut } = useClerk()
   const router = useRouter()
+  const [modalVisible, setModalVisible] = useState(false)
 
   const handleSignOut = async () => {
     await signOut()
@@ -48,6 +51,7 @@ const Home = () => {
           keyExtractor={(item) => item.$id}
           ListHeaderComponent={() => (
             <View className="flex">
+              {/* Header Content */}
               <View className="flex my-6 px-4 justify-between items-center flex-row mb-16">
                 <View className="flex items-center">
                   <View className="flex flex-row gap-4">
@@ -57,7 +61,6 @@ const Home = () => {
                         className="w-8 h-8"
                       />
                     </View>
-
                     <View className="felx items-center">
                       <Text className="font-pregular text-lg text-primary">
                         Hey, <Text className="font-psemibold">{username}</Text>
@@ -83,14 +86,53 @@ const Home = () => {
               </View>
 
               <View className="flex flex-col justify-center items-center mb-24 h-20 px-4">
-                <AccountsData />
+                <View className="flex flex-row justify-center items-center">
+                  <AccountsData />
+                  <TouchableOpacity
+                    className="ml-2"
+                    title="Open Modal"
+                    onPress={() => setModalVisible(true)}
+                  >
+                    <Image
+                      source={icons.CircleDown}
+                      className="h-7 w-7"
+                    />
+                    <Modal
+                      animationType="slide"
+                      transparent={true}
+                      visible={modalVisible}
+                      onRequestClose={() => setModalVisible(false)}
+                    >
+                      <SafeAreaView className="flex-1 justify-end">
+                        <View className="bg-white w-full pb-10 h-2/3 rounded-t-3xl">
+                          <View className="flex flex-row justify-between px-5 py-5 mt-4">
+                            <Text className="font-psemibold text-xl">
+                              Accounts
+                            </Text>
+                            <TouchableOpacity
+                              onPress={() => setModalVisible(false)}
+                            >
+                              <Image
+                                source={icons.Close}
+                                className="h-4 w-4 justify-items-end"
+                              />
+                            </TouchableOpacity>
+                          </View>
+
+                          <AccountList />
+                        </View>
+                      </SafeAreaView>
+                    </Modal>
+                  </TouchableOpacity>
+                </View>
+
                 <Text className="font-pregular text-gray-100">
                   Total Balance
                 </Text>
               </View>
 
               <View className="bg-white relative my-6 px-4 justify-center items-center flex">
-                <View className="bg-white felx flex-row justify-center h-32 absolute -top-16 rounded-[30px] shadow-md w-full">
+                <View className="bg-white flex flex-row justify-center h-32 absolute -top-16 rounded-[30px] shadow-md w-full">
                   <View className="flex justify-center w-1/2">
                     <View className="flex flex-row w-full items-center">
                       <RoundBtn
@@ -102,12 +144,10 @@ const Home = () => {
                         Income
                       </Text>
                     </View>
-                    <View className="flex w-full justify-center content-center">
-                      <IncomeData
-                        startDate="2024-08-01T01%3A00%3A00.000Z"
-                        endDate="2024-08-31T01%3A00%3A00.000Z"
-                      />
-                    </View>
+                    <IncomeData
+                      startDate="2024-08-01T01%3A00%3A00.000Z"
+                      endDate="2024-08-31T01%3A00%3A00.000Z"
+                    />
                   </View>
 
                   <View className="flex justify-center">
@@ -121,12 +161,12 @@ const Home = () => {
                         Expenses
                       </Text>
                     </View>
-
                     <ExpenseData />
                   </View>
                 </View>
 
-                <View className="felx px-1 h-full">
+                {/* Latest Transactions */}
+                <View className="flex px-1 h-full">
                   <View className="flex flex-row justify-between mt-28 items-center mb-4 w-full">
                     <Text className=" font-psemibold text-xl text-primary">
                       Latest Transactions
