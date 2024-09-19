@@ -18,7 +18,7 @@ const IncomeItem = ({ income }) => {
   }
   return (
     <TouchableOpacity
-      className="flex mx-4 mb-5 bg-white rounded-3xl shadow-md px-4 py-6"
+      className="flex mx-4 mb-5 bg-white rounded-3xl shadow-md px-4 py-6 mt-5"
       onPress={() => onIncomeClick(income)}
     >
       <View className="flex flex-row  justify-between ">

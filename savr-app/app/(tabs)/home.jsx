@@ -177,7 +177,10 @@ const Home = () => {
                       </Text>
                     </TouchableOpacity>
                   </View>
-                  <TransactionList itemsToShow="8" />
+                  <TransactionList
+                    itemsToShow="8"
+                    showDateTitle={false}
+                  />
                 </View>
               </View>
             </View>
