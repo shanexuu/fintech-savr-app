@@ -1,9 +1,18 @@
-import React, { memo } from 'react'
+import React, { memo, useState, useEffect, useRef } from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import { CategoryBtn } from '../components'
+import { supabase } from '../utils/SupabaseConfig'
+import { useUser, useClerk } from '@clerk/clerk-expo'
+import { useRouter } from 'expo-router'
 
 const TransactionItem = memo(({ item, accountsData }) => {
-  const maxLength = 20
+  const { user } = useUser()
+  const email = user?.emailAddresses[0]?.emailAddress
+  const router = useRouter()
+
+  const [categoryDetails, setCategoryDetails] = useState(null)
+
+  const maxLength = 12
 
   // Function to truncate text if it exceeds the maximum length
   const truncateText = (text, length) => {
@@ -26,23 +35,55 @@ const TransactionItem = memo(({ item, accountsData }) => {
 
   const logoUri = item.meta?.logo || getAccountLogo(item._account)
 
+  const categoryName =
+    item.type === 'TRANSFER' || item.type === 'DEBIT'
+      ? item.category?.groups?.personal_finance?.name || item.type
+      : 'Uncategorised'
+  const getCategories = async () => {
+    const { data, error } = await supabase.from('category').select('*')
+    if (error) {
+      console.error('Error fetching category details:', error)
+      return
+    }
+
+    const matchedCategory = data.find((cat) =>
+      cat.name.toLowerCase().includes(categoryName.toLowerCase())
+    )
+
+    if (matchedCategory) {
+      setCategoryDetails({
+        icon: matchedCategory.icon,
+        color: matchedCategory.color,
+      })
+    }
+  }
+
+  useEffect(() => {
+    if (categoryName) {
+      getCategories()
+    }
+  }, [categoryName])
+
   return (
     <TouchableOpacity>
-      <View className="flex flex-row justify-between items-center px-3 py-6 bg-white rounded-3xl shadow-md mb-6 w-full">
+      <View className="flex flex-row justify-between items-center px-3 mt-3 py-6 bg-white rounded-3xl shadow-md mb-4 w-full">
         <View className="flex flex-row gap-2 items-center">
           <View>
             <Image
               source={{ uri: logoUri }}
-              className="w-10 h-10 rounded-full"
+              className="w-9 h-9 rounded-full"
             />
           </View>
           <View>
             <Text className="font-pmedium text-base">
-              {truncateText(item.description, maxLength)}
+              {truncateText(
+                item?.merchant?.name ? item?.merchant?.name : item.description,
+                maxLength
+              )}
             </Text>
             <View className="flex flex-row gap-1">
               <Text
-                className={`font-pmedium text-sm ${
+                className={`font-pregular text-sm ${
                   item.amount >= 0 ? 'text-green-500' : 'text-red-500'
                 }`}
               >
@@ -50,8 +91,8 @@ const TransactionItem = memo(({ item, accountsData }) => {
                   ? `+$${item.amount}`
                   : `-$${Math.abs(item.amount)}`}
               </Text>
-              <Text className="text-gray-100 font-pbold">•</Text>
-              <Text className="font-pregular text-sm text-gray-100">
+              <Text className="text-gray-400 font-pbold">•</Text>
+              <Text className="font-pregular text-sm text-gray-400">
                 {formatDate(item.date)}
               </Text>
             </View>
@@ -60,14 +101,15 @@ const TransactionItem = memo(({ item, accountsData }) => {
 
         <View>
           <CategoryBtn
-            icon={
-              item.category?.groups?.personal_finance?.name
-                ? item.category.groups.personal_finance.name.replace(
-                    /\s+/g,
-                    '_'
-                  )
-                : 'Coin'
+            icon={categoryDetails?.icon}
+            title={
+              item.type === 'TRANSFER'
+                ? 'Transfer'
+                : item.type === 'PAYMENT'
+                ? 'Uncategorised'
+                : categoryName
             }
+            iconStyles={categoryDetails?.color}
           />
         </View>
       </View>

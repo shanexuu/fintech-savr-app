@@ -6,11 +6,11 @@ import {
   ScrollView,
   RefreshControl,
 } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { RoundBtn, CircularChart, IncomeList } from '../../components'
 import { supabase } from '../../utils/SupabaseConfig'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import { useUser, useClerk } from '@clerk/clerk-expo'
 
 const Budget = () => {
@@ -41,6 +41,12 @@ const Budget = () => {
   const addExpense = () => {
     navigation.navigate('(budget)/add-expense')
   }
+
+  useFocusEffect(
+    useCallback(() => {
+      getIncomeList()
+    }, [])
+  )
 
   return (
     <SafeAreaView
@@ -82,7 +88,7 @@ const Budget = () => {
           <View>
             <View className="flex flex-row justify-between items-center my-6 px-4">
               <Text className=" font-psemibold text-xl text-primary">
-                Income Budget
+                Income Budgets
               </Text>
               <TouchableOpacity onPress={addIncome}>
                 <Text className="font-plight text-primary text-3xl">+</Text>
@@ -95,7 +101,7 @@ const Budget = () => {
           <View>
             <View className="flex flex-row justify-between items-center my-6 px-4">
               <Text className=" font-psemibold text-xl text-primary">
-                Expense Budget
+                Expense Budgets
               </Text>
               <TouchableOpacity onPress={addExpense}>
                 <Text className="font-plight text-primary text-3xl">+</Text>

@@ -113,7 +113,7 @@ const AddIncome = () => {
               activeOpacity={1}
             >
               <View className="flex flex-row items-center mt-10 mb-5 border-b-2 border-gray-300 h-10 justify-between">
-                <Text className="font-pregular text-lg">Amount</Text>
+                <Text className="font-pmedium text-lg">Amount</Text>
                 <View className="flex flex-row items-center justify-center gap-1">
                   <TextInput
                     ref={inputRef}
@@ -127,7 +127,7 @@ const AddIncome = () => {
               </View>
             </TouchableOpacity>
             <View className="pb-4 mb-5">
-              <Text className="font-pregular text-lg mb-4">How often?</Text>
+              <Text className="font-pmedium  text-lg mb-4">How often?</Text>
               <View className="flex flex-row items-center space-x-4">
                 {options.map((option, index) => (
                   <TouchableOpacity

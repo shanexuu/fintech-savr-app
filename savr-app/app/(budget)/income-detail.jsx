@@ -22,6 +22,9 @@ const IncomeDetail = () => {
   const router = useRouter()
 
   const { incomeId } = useLocalSearchParams()
+
+  const [incomeData, setIncomeData] = useState(null)
+
   useEffect(() => {
     console.log(incomeId)
     incomeId && getIncomeDetail()
@@ -32,7 +35,19 @@ const IncomeDetail = () => {
       .from('income')
       .select('*')
       .eq('id', incomeId)
-    console.log('data:', data)
+
+    if (data && data.length > 0) {
+      const income = data[0]
+      setIncomeData(income)
+      setSelectedIcon(income.icon)
+      setCategoryTitle(income.name)
+      setAmount(income.amount.toString())
+      setSelectedOption(income.period)
+      setSelectedColor(income.color)
+    }
+    if (error) {
+      console.error('Error fetching income details:', error)
+    }
   }
   const [selectedIcon, setSelectedIcon] = useState('IC')
   const [selectedColor, setSelectedColor] = useState(Colors.purple.light)
@@ -67,7 +82,7 @@ const IncomeDetail = () => {
   const onCreateIncome = async () => {
     const { data, error } = await supabase
       .from('income')
-      .insert([
+      .update([
         {
           name: categoryTitle,
           icon: selectedIcon,
@@ -77,25 +92,16 @@ const IncomeDetail = () => {
           created_by: email,
         },
       ])
+      .eq('id', incomeId)
       .select()
     console.log(data, error)
     if (data) {
-      router.replace({
-        pathname: '/(budget)/income-detail',
-        params: {
-          incomeId: data[0].id,
-        },
-      })
+      router.back()
     }
   }
   return (
-    <View className="px-3 py-6 bg-white h-full">
-      <View
-        className=""
-        flex-1
-        justify-between
-        px-4
-      >
+    <SafeAreaView className="bg-white h-full">
+      <View className="flex-1 justify-between px-4">
         <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
           <View className="w-full flex justify-center">
             <View className="items-center justify-center">
@@ -105,9 +111,8 @@ const IncomeDetail = () => {
                   style={{ backgroundColor: selectedColor }}
                   maxLength={2}
                   onChangeText={handleIcon}
-                >
-                  {selectedIcon}
-                </TextInput>
+                  value={selectedIcon}
+                ></TextInput>
                 <View className="flex items-center justify-center h-6 w-6 absolute bottom-0 right-2 bg-primary rounded-full">
                   <Image
                     source={icons.Pencil}
@@ -122,8 +127,9 @@ const IncomeDetail = () => {
               />
             </View>
             <TextInput
-              placeholder="Income title"
+              placeholder="Income Title"
               onChangeText={handleCategoryTitle}
+              value={categoryTitle}
               className="mt-10 font-pmedium text-lg border-b-2 border-gray-300 h-10"
             />
             <TouchableOpacity
@@ -131,7 +137,7 @@ const IncomeDetail = () => {
               activeOpacity={1}
             >
               <View className="flex flex-row items-center mt-10 mb-5 border-b-2 border-gray-300 h-10 justify-between">
-                <Text className="font-pregular text-lg">Amount</Text>
+                <Text className="font-pmedium text-lg">Amount</Text>
                 <View className="flex flex-row items-center justify-center gap-1">
                   <TextInput
                     ref={inputRef}
@@ -145,7 +151,7 @@ const IncomeDetail = () => {
               </View>
             </TouchableOpacity>
             <View className="pb-4 mb-5">
-              <Text className="font-pregular text-lg mb-4">How often?</Text>
+              <Text className="font-pmedium  text-lg mb-4">How often?</Text>
               <View className="flex flex-row items-center space-x-4">
                 {options.map((option, index) => (
                   <TouchableOpacity
@@ -172,8 +178,15 @@ const IncomeDetail = () => {
             </View>
           </View>
         </ScrollView>
+        <View className="flex justify-center mb-6">
+          <CustomButton
+            title="Update"
+            isLoading={!categoryTitle || !amount || !selectedOption}
+            handlePress={onCreateIncome}
+          />
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 

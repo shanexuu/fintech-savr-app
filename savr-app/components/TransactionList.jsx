@@ -4,7 +4,36 @@ import { useQuery } from '@tanstack/react-query'
 import Spinner from 'react-native-loading-spinner-overlay'
 import TransactionItem from './TransactionItem'
 
-const TransactionList = ({ itemsToShow }) => {
+const formatTransactionDate = (dateString) => {
+  const today = new Date()
+  const transactionDate = new Date(dateString)
+
+  const isToday = transactionDate.toDateString() === today.toDateString()
+  const isYesterday =
+    transactionDate.toDateString() ===
+    new Date(today.setDate(today.getDate() - 1)).toDateString()
+
+  if (isToday) return 'Today'
+  if (isYesterday) return 'Yesterday'
+
+  return transactionDate.toLocaleDateString('en-NZ', {
+    day: '2-digit',
+    month: 'long', // e.g., "July"
+    year: 'numeric',
+  })
+}
+
+const groupTransactionsByDate = (transactions) => {
+  return transactions.reduce((groups, transaction) => {
+    const transactionDate = new Date(transaction.created_at).toDateString()
+    if (!groups[transactionDate]) {
+      groups[transactionDate] = []
+    }
+    groups[transactionDate].push(transaction)
+    return groups
+  }, {})
+}
+const TransactionList = ({ itemsToShow, showDateTitle = true }) => {
   // Fetch transactions
   const {
     data: transactionsData,
@@ -37,17 +66,32 @@ const TransactionList = ({ itemsToShow }) => {
     )
   }
 
+  const groupedTransactions = groupTransactionsByDate(
+    transactionsData?.items?.slice(0, itemsToShow)
+  )
+
   return (
     <FlatList
-      data={transactionsData?.items?.slice(0, [itemsToShow])}
-      renderItem={({ item }) => (
-        <TransactionItem
-          item={item}
-          accountsData={accountsData}
-        />
+      data={Object.keys(groupedTransactions)} // Date keys
+      renderItem={({ item: dateKey }) => (
+        <View>
+          {showDateTitle && (
+            <Text className="font-bold text-lg">
+              {formatTransactionDate(dateKey)}
+            </Text>
+          )}
+
+          {/* Map through transactions of the same date */}
+          {groupedTransactions[dateKey].map((transaction) => (
+            <TransactionItem
+              key={transaction._id}
+              item={transaction}
+              accountsData={accountsData}
+            />
+          ))}
+        </View>
       )}
-      keyExtractor={(item) => item._id.toString()}
-      initialNumToRender={10}
+      keyExtractor={(item) => item}
       windowSize={5}
     />
   )
