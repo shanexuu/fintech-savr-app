@@ -20,15 +20,17 @@ const IncomeData = ({ startDate, endDate, textStyles }) => {
 
   // Function to calculate the total amount
   const calculateTotalAmount = () => {
-    if (!incomeData?.items) return 0 // Ensure we don't calculate if data is not available
+    if (!incomeData?.items) return 0
 
-    return incomeData.items.reduce((total, item) => {
+    const total = incomeData.items.reduce((total, item) => {
       const transactionTotal = item.transactions.reduce(
         (sum, transaction) => sum + transaction.amount,
         0
       )
       return total + transactionTotal
     }, 0)
+
+    return total.toFixed(2)
   }
 
   const totalAmount = calculateTotalAmount()

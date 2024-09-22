@@ -85,7 +85,7 @@ const TabsLayout = () => {
           name="transactions"
           options={{
             title: 'Transactions',
-            headerShown: true,
+            headerShown: false,
             headerStyle: {
               backgroundColor: '#fff',
               elevation: 0,
