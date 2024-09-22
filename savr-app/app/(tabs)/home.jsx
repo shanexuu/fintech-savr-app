@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Modal,
+  TouchableWithoutFeedback,
 } from 'react-native'
 import React, { useState } from 'react'
 import { Link, useRouter } from 'expo-router'
@@ -40,18 +41,33 @@ const Home = () => {
     navigation.navigate('transactions')
   }
 
+  // Get the current year and month
+  const currentDate = new Date()
+  const currentYear = currentDate.getFullYear()
+  const currentMonth = currentDate.getMonth()
+
+  // Calculate the first and last day of the current month
+  const startDate = new Date(currentYear, currentMonth, 1).toISOString()
+  const endDate = new Date(
+    currentYear,
+    currentMonth + 1,
+    0,
+    23,
+    59,
+    59
+  ).toISOString()
+
   return (
     <SafeAreaView
       edges={['top', 'left', 'right']}
-      className="bg-purple-100 h-full flex-1"
+      className="bg-purple-100 h-full flex"
     >
       <View>
         <FlatList
           data={[{ id: 1 }]}
           keyExtractor={(item) => item.$id}
           ListHeaderComponent={() => (
-            <View className="flex">
-              {/* Header Content */}
+            <View className="flex w-full">
               <View className="flex my-6 px-4 justify-between items-center flex-row mb-16">
                 <View className="flex items-center">
                   <View className="flex flex-row gap-4">
@@ -91,10 +107,10 @@ const Home = () => {
                   <TouchableOpacity
                     className="ml-2"
                     title="Open Modal"
-                    onPress={() => setModalVisible(true)}
+                    onPress={() => setModalVisible(!modalVisible)}
                   >
                     <Image
-                      source={icons.CircleDown}
+                      source={modalVisible ? icons.CircleUp : icons.CircleDown}
                       className="h-7 w-7"
                     />
                     <Modal
@@ -103,25 +119,31 @@ const Home = () => {
                       visible={modalVisible}
                       onRequestClose={() => setModalVisible(false)}
                     >
-                      <SafeAreaView className="flex-1 justify-end">
-                        <View className="bg-white w-full pb-10 h-2/3 rounded-t-3xl">
-                          <View className="flex flex-row justify-between px-5 py-5 mt-4">
-                            <Text className="font-psemibold text-xl">
-                              Accounts
-                            </Text>
-                            <TouchableOpacity
-                              onPress={() => setModalVisible(false)}
-                            >
-                              <Image
-                                source={icons.Close}
-                                className="h-4 w-4 justify-items-end"
-                              />
-                            </TouchableOpacity>
-                          </View>
+                      <TouchableWithoutFeedback
+                        onPress={() => setModalVisible(false)}
+                      >
+                        <SafeAreaView className="flex-1 justify-end">
+                          <TouchableWithoutFeedback onPress={() => {}}>
+                            <View className="bg-white w-full pb-10 h-2/3 rounded-t-3xl">
+                              <View className="flex flex-row justify-between px-5 py-5 mt-4">
+                                <Text className="font-psemibold text-xl">
+                                  Accounts
+                                </Text>
+                                <TouchableOpacity
+                                  onPress={() => setModalVisible(false)}
+                                >
+                                  <Image
+                                    source={icons.Close}
+                                    className="h-4 w-4 justify-items-end"
+                                  />
+                                </TouchableOpacity>
+                              </View>
 
-                          <AccountList />
-                        </View>
-                      </SafeAreaView>
+                              <AccountList />
+                            </View>
+                          </TouchableWithoutFeedback>
+                        </SafeAreaView>
+                      </TouchableWithoutFeedback>
                     </Modal>
                   </TouchableOpacity>
                 </View>
@@ -145,8 +167,8 @@ const Home = () => {
                       </Text>
                     </View>
                     <IncomeData
-                      startDate="2024-08-01T01%3A00%3A00.000Z"
-                      endDate="2024-08-31T01%3A00%3A00.000Z"
+                      startDate={startDate}
+                      endDate={endDate}
                     />
                   </View>
 
@@ -165,9 +187,8 @@ const Home = () => {
                   </View>
                 </View>
 
-                {/* Latest Transactions */}
-                <View className="flex px-1 h-full">
-                  <View className="flex flex-row justify-between mt-28 items-center mb-4 w-full">
+                <View className="flex h-full">
+                  <View className="flex flex-row justify-between mt-28 items-center mb-4 mx-4">
                     <Text className=" font-psemibold text-xl text-primary">
                       Latest Transactions
                     </Text>

@@ -7,11 +7,12 @@ import {
   RefreshControl,
 } from 'react-native'
 import React, { useEffect, useState, useCallback } from 'react'
-import { RoundBtn, CircularChart, IncomeList } from '../../components'
+import { RoundBtn, CircularChart, IncomeList, Header } from '../../components'
 import { supabase } from '../../utils/SupabaseConfig'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import { useUser, useClerk } from '@clerk/clerk-expo'
+import { icons } from '../../constants'
 
 const Budget = () => {
   const { user } = useUser()
@@ -62,7 +63,7 @@ const Budget = () => {
         }
       >
         <View className="h-full bg-white ">
-          <View className="my-6 px-4">
+          {/* <View className="my-6 px-4">
             <View className=" bg-white w-full p-4 flex flex-row justify-between items-center mb-10 rounded-[50px] shadow-md">
               <TouchableOpacity>
                 <RoundBtn
@@ -80,9 +81,16 @@ const Budget = () => {
                 />
               </TouchableOpacity>
             </View>
+          </View> */}
+          <View className="px-4">
+            <Header
+              headertext="Budget"
+              icon={icons.Info}
+              containerStyle="mb-8"
+            />
           </View>
 
-          <View className="flex items-center mb-10">
+          <View className="flex items-center mb-10 shadow-md px-4 rounded-3xl">
             <CircularChart />
           </View>
           <View>

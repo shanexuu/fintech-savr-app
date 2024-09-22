@@ -9,7 +9,7 @@ import {
 import React, { useState, useRef } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Colors } from '../../constants/Colors'
-import { ColorPicker, CustomButton } from '../../components'
+import { ColorPicker, CustomButton, Header } from '../../components'
 import { icons } from '../../constants'
 import { supabase } from '../../utils/SupabaseConfig'
 import { useUser, useClerk } from '@clerk/clerk-expo'
@@ -76,10 +76,16 @@ const AddIncome = () => {
     }
   }
   return (
-    <SafeAreaView className="bg-white h-full">
+    <SafeAreaView className="h-full">
       <View className="flex-1 justify-between px-4">
         <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
           <View className="w-full flex justify-center">
+            <Header
+              headertext="Add income budget"
+              icon={icons.Close}
+              containerStyle="mb-8"
+              handlePress={() => router.back()}
+            />
             <View className="items-center justify-center">
               <View className="relative mb-5">
                 <TextInput

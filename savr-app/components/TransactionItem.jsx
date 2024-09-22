@@ -37,7 +37,10 @@ const TransactionItem = memo(({ item, accountsData }) => {
 
   const categoryName =
     item.type === 'TRANSFER' || item.type === 'DEBIT'
-      ? item.category?.groups?.personal_finance?.name || item.type
+      ? item.category?.groups?.personal_finance?.name ===
+        'Professional Services'
+        ? 'Services'
+        : item.category?.groups?.personal_finance?.name || item.type
       : 'Uncategorised'
   const getCategories = async () => {
     const { data, error } = await supabase.from('category').select('*')
@@ -66,7 +69,7 @@ const TransactionItem = memo(({ item, accountsData }) => {
 
   return (
     <TouchableOpacity>
-      <View className="flex flex-row justify-between items-center px-3 mt-3 py-6 bg-white rounded-3xl shadow-md mb-4 w-full">
+      <View className="flex flex-row justify-between items-center mx-4 mt-5 py-6 bg-white rounded-3xl shadow-md mb-5 px-4">
         <View className="flex flex-row gap-2 items-center">
           <View>
             <Image
@@ -101,15 +104,24 @@ const TransactionItem = memo(({ item, accountsData }) => {
 
         <View>
           <CategoryBtn
-            icon={categoryDetails?.icon}
+            icon={
+              item.type === 'DEBIT' && item.category == null
+                ? '❓'
+                : categoryDetails?.icon
+            }
             title={
               item.type === 'TRANSFER'
                 ? 'Transfer'
-                : item.type === 'PAYMENT'
+                : item.type === 'PAYMENT' ||
+                  (item.type === 'DEBIT' && item.category == null)
                 ? 'Uncategorised'
                 : categoryName
             }
-            iconStyles={categoryDetails?.color}
+            iconStyles={
+              item.type === 'DEBIT' && item.category == null
+                ? '#D9D8F7'
+                : categoryDetails?.color
+            }
           />
         </View>
       </View>

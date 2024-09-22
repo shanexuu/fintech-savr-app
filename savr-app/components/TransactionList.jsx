@@ -76,7 +76,7 @@ const TransactionList = ({ itemsToShow, showDateTitle = true }) => {
       renderItem={({ item: dateKey }) => (
         <View>
           {showDateTitle && (
-            <Text className="font-bold text-lg">
+            <Text className="font-bold text-lg px-4">
               {formatTransactionDate(dateKey)}
             </Text>
           )}

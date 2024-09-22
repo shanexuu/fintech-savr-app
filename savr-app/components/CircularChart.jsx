@@ -9,7 +9,7 @@ const CircularChart = () => {
   const [sliceColor, setSliceColor] = useState([Colors.dark.text])
 
   return (
-    <View className="relative w-full justify-center items-center bg-white">
+    <View className="relative w-full justify-center items-center bg-white rounded-3xl">
       <View className="flex absolute bottom-1/2 justify-center items-center z-50">
         <Text
           className="font-pmedium text-5xl"
@@ -21,7 +21,7 @@ const CircularChart = () => {
           Total Budget
         </Text>
       </View>
-      <View className="flex gap-8">
+      <View className="flex gap-8 mt-5">
         <PieChart
           widthAndHeight={widthAndHeight}
           series={values}
@@ -29,7 +29,7 @@ const CircularChart = () => {
           coverRadius={0.75}
           coverFill={'#FFF'}
         />
-        <View className="w-full   flex flex-row justify-start gap-2 items-center">
+        <View className="w-full   flex flex-row justify-start gap-2 items-center mb-10">
           <View className="bg-gray-300 h-8 w-8 rounded-full"></View>
           <Text>NaN</Text>
         </View>

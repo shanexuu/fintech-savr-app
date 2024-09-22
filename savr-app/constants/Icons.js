@@ -26,7 +26,9 @@ import Previous from '../assets/images/caret-left.png'
 import Next from '../assets/images/caret-right.png'
 import Pencil from '../assets/images/pencil-simple.png'
 import CircleDown from '../assets/images/circle-down.png'
+import CircleUp from '../assets/images/circle-up.png'
 import Close from '../assets/images/x-bold.png'
+import Info from '../assets/images/info.png'
 
 export default {
   home,
@@ -58,4 +60,6 @@ export default {
   Pencil,
   CircleDown,
   Close,
+  CircleUp,
+  Info,
 }

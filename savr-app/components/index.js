@@ -16,6 +16,7 @@ import ColorPicker from './ColorPicker'
 import IncomeList from './IncomeList'
 import IncomeItem from './IncomeItem'
 import AccountList from './AccountList'
+import Header from './Header'
 
 export {
   Onboarding,
@@ -36,4 +37,5 @@ export {
   IncomeList,
   IncomeItem,
   AccountList,
+  Header,
 }
