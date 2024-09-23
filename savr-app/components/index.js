@@ -15,6 +15,8 @@ import CircularChart from './CircularChart'
 import ColorPicker from './ColorPicker'
 import IncomeList from './IncomeList'
 import IncomeItem from './IncomeItem'
+import ExpenseList from './ExpenseList'
+import ExpenseItem from './ExpenseItem'
 import AccountList from './AccountList'
 import Header from './Header'
 
@@ -37,5 +39,7 @@ export {
   IncomeList,
   IncomeItem,
   AccountList,
+  ExpenseList,
+  ExpenseItem,
   Header,
 }

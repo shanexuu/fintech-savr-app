@@ -29,6 +29,7 @@ import CircleDown from '../assets/images/circle-down.png'
 import CircleUp from '../assets/images/circle-up.png'
 import Close from '../assets/images/x-bold.png'
 import Info from '../assets/images/info.png'
+import Hand from '../assets/images/hand.png'
 
 export default {
   home,
@@ -62,4 +63,5 @@ export default {
   Close,
   CircleUp,
   Info,
+  Hand,
 }

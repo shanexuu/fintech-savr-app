@@ -18,48 +18,41 @@ import { useUser } from '@clerk/clerk-expo'
 import { useRouter } from 'expo-router'
 import { CategoryBtn, Header } from '../../components'
 
-const IncomeDetail = () => {
+const ExpenseDetail = () => {
   const { user } = useUser()
   const email = user?.emailAddresses[0]?.emailAddress
   const router = useRouter()
   const [modalVisible, setModalVisible] = useState(false)
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false)
-  const { incomeId, categoryId } = useLocalSearchParams()
+  const { expenseId, categoryId } = useLocalSearchParams()
 
-  const [incomeData, setIncomeData] = useState(null)
+  const [expenseData, setExpenseData] = useState(null)
 
   useEffect(() => {
-    incomeId && getIncomeDetail()
-  }, [incomeId])
+    expenseId && getExpenseDetail()
+  }, [expenseId])
 
-  const getIncomeDetail = async () => {
-    if (!incomeId) return
+  const getExpenseDetail = async () => {
+    if (!expenseId) return
 
-    // Fetch income data along with related category
-    const { data: incomeData, error: incomeError } = await supabase
-      .from('income')
-      .select(
-        `
-        *,
-        category (*)
-      `
-      )
-      .eq('id', incomeId)
-      .single() // Fetch a single record
+    const { data: expenseData, error: expenseError } = await supabase
+      .from('expense')
+      .select('*, category (*)')
+      .eq('id', expenseId)
+      .single()
 
-    if (incomeData) {
-      const income = incomeData
-      setIncomeData(income)
-      setSelectedIcon(income.icon)
-      setCategoryTitle(income.name)
-      setAmount(income.amount.toString())
-      setSelectedOption(income.period)
-      setSelectedColor(income.color)
-      setCategory(income.category.name)
-      setColor(income.category.color)
-      setIcon(income.category.icon)
-    } else if (incomeError) {
-      console.error('Error fetching income details:', incomeError)
+    if (expenseData) {
+      setExpenseData(expenseData)
+      setSelectedIcon(expenseData.icon)
+      setCategoryTitle(expenseData.name)
+      setAmount(expenseData.amount.toString())
+      setSelectedOption(expenseData.period)
+      setSelectedColor(expenseData.color)
+      setCategory(expenseData.category.name)
+      setColor(expenseData.category.color)
+      setIcon(expenseData.category.icon)
+    } else if (expenseError) {
+      console.error('Error fetching expense details:', expenseError)
     }
   }
 
@@ -67,7 +60,7 @@ const IncomeDetail = () => {
     const { data, error } = await supabase
       .from('category')
       .select('*')
-      .eq('type', 'income')
+      .eq('type', 'expense')
       .eq('created_by', email)
 
     if (data) {
@@ -76,12 +69,13 @@ const IncomeDetail = () => {
       console.error('Error fetching categories:', error)
     }
   }
+
   const handleModalOpen = () => {
     fetchCategories()
     setModalVisible(true)
   }
 
-  const [selectedIcon, setSelectedIcon] = useState('IC')
+  const [selectedIcon, setSelectedIcon] = useState('💸')
   const [selectedColor, setSelectedColor] = useState(Colors.purple.light)
   const [categoryTitle, setCategoryTitle] = useState()
   const [category, setCategory] = useState()
@@ -114,10 +108,9 @@ const IncomeDetail = () => {
     }
   }
 
-  // Function to update the income details
-  const onUpdateIncome = async () => {
+  const onUpdateExpense = async () => {
     const { data, error } = await supabase
-      .from('income')
+      .from('expense')
       .update({
         name: categoryTitle,
         icon: selectedIcon,
@@ -127,10 +120,13 @@ const IncomeDetail = () => {
         created_by: email,
         category_id: categoryId,
       })
-      .eq('id', incomeId)
+      .eq('id', expenseId)
       .select()
 
-    if (data) {
+    if (error) {
+      console.error('Error updating expense:', error)
+    } else {
+      console.log('Expense updated:', data)
       router.back()
     }
   }
@@ -151,18 +147,18 @@ const IncomeDetail = () => {
     }
   }
 
-  // Function to delete the income entry
-  const onDeleteIncome = async () => {
+  const onDeleteExpense = async () => {
     try {
-      const { data: incomeData, error: incomeError } = await supabase
-        .from('income')
+      const { data: expenseData, error: expenseError } = await supabase
+        .from('expense')
         .delete()
-        .eq('id', incomeId)
+        .eq('id', expenseId)
 
-      if (incomeError) {
-        throw new Error('Error deleting income: ' + incomeError.message)
+      if (expenseError) {
+        throw new Error('Error deleting expense: ' + expenseError.message)
       }
 
+      console.log('Expense deleted:', expenseData)
       router.back()
     } catch (error) {
       console.error('Error during delete operation:', error)
@@ -175,7 +171,7 @@ const IncomeDetail = () => {
         <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
           <View className="w-full flex justify-center">
             <Header
-              headertext="Income budget"
+              headertext="Expense Budget"
               icon={icons.Close}
               containerStyle="mb-8"
               handlePress={() => router.back()}
@@ -223,7 +219,7 @@ const IncomeDetail = () => {
                     <View className="bg-white w-full pb-10 rounded-t-3xl">
                       <View className="flex flex-row justify-between px-5 py-5 mt-4">
                         <Text className="font-psemibold text-xl">
-                          Income category
+                          Expense Category
                         </Text>
                         <TouchableOpacity
                           onPress={() => setModalVisible(false)}
@@ -237,16 +233,16 @@ const IncomeDetail = () => {
                       <View className="flex flex-row flex-wrap items-center mx-2">
                         {categories.map((category) => (
                           <CategoryBtn
+                            key={category.id}
                             title={category.name}
                             icon={category.icon}
                             iconStyles={category.color}
                             containerStyles="m-1"
                             handlePress={() => {
-                              // Set selected category logic here if needed
-                              setCategory(category.name) // Set category name
-                              setIcon(category.icon) // Set icon
-                              setColor(category.color) // Set color
-                              setModalVisible(false) // Close modal
+                              setCategory(category.name)
+                              setIcon(category.icon)
+                              setColor(category.color)
+                              setModalVisible(false)
                             }}
                           />
                         ))}
@@ -304,51 +300,50 @@ const IncomeDetail = () => {
             </View>
           </View>
         </ScrollView>
-        <View className="flex flex-row justify-center mb-6">
+
+        <View className="flex-row justify-between mb-5">
           <CustomButton
             title="Update"
-            isLoading={!categoryTitle || !amount || !selectedOption}
-            handlePress={onUpdateIncome}
+            handlePress={onUpdateExpense}
             containerStyles="w-44 mr-5"
           />
           <CustomButton
             title="Delete"
-            isLoading={!categoryTitle || !amount || !selectedOption}
             handlePress={() => setConfirmDeleteVisible(true)}
             containerStyles="w-44"
           />
-          <Modal
-            transparent={true}
-            animationType="slide"
-            visible={confirmDeleteVisible}
-            onRequestClose={() => setConfirmDeleteVisible(false)}
-          >
-            <View className="flex-1 justify-center items-center bg-opacity-50">
-              <View className="bg-white w-4/5 p-6 rounded-lg">
-                <Text className="text-lg font-bold mb-4">Confirm Delete</Text>
-                <Text className="text-gray-500 mb-6">
-                  Are you sure you want to delete this income budget?
-                </Text>
+        </View>
 
-                <View className="flex flex-row justify-between">
-                  <CustomButton
-                    title="Cancel"
-                    handlePress={() => setConfirmDeleteVisible(false)}
-                    containerStyles="w-32 bg-gray-400"
-                  />
-                  <CustomButton
-                    title="Delete"
-                    handlePress={onDeleteIncome}
-                    containerStyles="w-32 bg-primary"
-                  />
-                </View>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={confirmDeleteVisible}
+          onRequestClose={() => setConfirmDeleteVisible(false)}
+        >
+          <View className="flex-1 justify-center items-center bg-opacity-50">
+            <View className="bg-white w-4/5 p-6 rounded-lg">
+              <Text className="text-lg font-bold mb-4">Confirm Delete</Text>
+              <Text className="text-gray-500 mb-6">
+                Are you sure you want to delete this income budget?
+              </Text>
+              <View className="flex flex-row justify-between">
+                <CustomButton
+                  title="Cancel"
+                  handlePress={() => setConfirmDeleteVisible(false)}
+                  containerStyles="w-32 bg-gray-400"
+                />
+                <CustomButton
+                  title="Delete"
+                  handlePress={onDeleteExpense}
+                  containerStyles="w-32 bg-primary"
+                />
               </View>
             </View>
-          </Modal>
-        </View>
+          </View>
+        </Modal>
       </View>
     </SafeAreaView>
   )
 }
 
-export default IncomeDetail
+export default ExpenseDetail

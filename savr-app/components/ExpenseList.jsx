@@ -1,15 +1,15 @@
 import { View, FlatList, Text } from 'react-native'
 import React from 'react'
-import IncomeItem from './IncomeItem'
+import ExpenseItem from './ExpenseItem'
 
-const IncomeList = ({ incomeList }) => {
+const ExpenseList = ({ expenseList }) => {
   return (
     <FlatList
-      data={incomeList}
+      data={expenseList}
       keyExtractor={(item, index) => index.toString()}
       renderItem={({ item }) => (
-        <IncomeItem
-          income={item.income}
+        <ExpenseItem
+          expense={item.expense}
           category={item.category}
         />
       )}
@@ -17,4 +17,4 @@ const IncomeList = ({ incomeList }) => {
   )
 }
 
-export default IncomeList
+export default ExpenseList

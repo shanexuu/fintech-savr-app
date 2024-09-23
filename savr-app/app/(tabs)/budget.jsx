@@ -7,35 +7,83 @@ import {
   RefreshControl,
 } from 'react-native'
 import React, { useEffect, useState, useCallback } from 'react'
-import { RoundBtn, CircularChart, IncomeList, Header } from '../../components'
+import {
+  RoundBtn,
+  CircularChart,
+  IncomeList,
+  Header,
+  ExpenseList,
+} from '../../components'
 import { supabase } from '../../utils/SupabaseConfig'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
-import { useUser, useClerk } from '@clerk/clerk-expo'
+import { useUser } from '@clerk/clerk-expo'
 import { icons } from '../../constants'
 
 const Budget = () => {
   const { user } = useUser()
   const email = user?.emailAddresses[0]?.emailAddress
   const navigation = useNavigation()
-  const [incomeList, setIncomeList] = useState()
+  const [incomeList, setIncomeList] = useState([])
+  const [expenseList, setExpenseList] = useState([])
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    getIncomeList()
+    getBudgetData()
   }, [])
 
-  const getIncomeList = async () => {
+  const getBudgetData = async () => {
     setLoading(true)
-    const { data, error } = await supabase
-      .from('income')
-      .select('*')
-      .eq('created_by', email)
+    try {
+      // Fetch income data
+      const { data: incomeData, error: incomeError } = await supabase
+        .from('income')
+        .select('*')
+        .eq('created_by', email)
+      if (incomeError) throw incomeError
 
-    console.log('data:', data)
-    setIncomeList(data)
-    data && setLoading(false)
+      const { data: categoryData, error: categoryError } = await supabase
+        .from('category')
+        .select('*')
+      if (categoryError) throw categoryError
+
+      const incomeWithCategory = incomeData.map((income) => {
+        const category = categoryData.find(
+          (cat) => cat.id === income.category_id
+        )
+        return {
+          income,
+          category,
+        }
+      })
+
+      setIncomeList(incomeWithCategory)
+
+      // Fetch expense data
+      const { data: expenseData, error: expenseError } = await supabase
+        .from('expense')
+        .select('*')
+        .eq('created_by', email)
+      if (expenseError) throw expenseError
+
+      const expenseWithCategory = expenseData.map((expense) => {
+        const category = categoryData.find(
+          (cat) => cat.id === expense.category_id
+        )
+        return {
+          expense,
+          category,
+        }
+      })
+
+      setExpenseList(expenseWithCategory)
+    } catch (error) {
+      console.error('Error fetching budget data:', error)
+    } finally {
+      setLoading(false)
+    }
   }
+
   const addIncome = () => {
     navigation.navigate('(budget)/add-income')
   }
@@ -45,7 +93,7 @@ const Budget = () => {
 
   useFocusEffect(
     useCallback(() => {
-      getIncomeList()
+      getBudgetData()
     }, [])
   )
 
@@ -57,31 +105,12 @@ const Budget = () => {
       <ScrollView
         refreshControl={
           <RefreshControl
-            onRefresh={() => getIncomeList()}
+            onRefresh={() => getBudgetData()}
             refreshing={loading}
           />
         }
       >
         <View className="h-full bg-white ">
-          {/* <View className="my-6 px-4">
-            <View className=" bg-white w-full p-4 flex flex-row justify-between items-center mb-10 rounded-[50px] shadow-md">
-              <TouchableOpacity>
-                <RoundBtn
-                  icon="Previous"
-                  imageStyles="h-5 w-5"
-                  containerStyles="h-8 w-8"
-                />
-              </TouchableOpacity>
-              <Text className="font-pmedium text-base">This month</Text>
-              <TouchableOpacity>
-                <RoundBtn
-                  icon="Next"
-                  imageStyles="h-5 w-5"
-                  containerStyles="h-8 w-8"
-                />
-              </TouchableOpacity>
-            </View>
-          </View> */}
           <View className="px-4">
             <Header
               headertext="Budget"
@@ -93,9 +122,11 @@ const Budget = () => {
           <View className="flex items-center mb-10 shadow-md px-4 rounded-3xl">
             <CircularChart />
           </View>
+
           <View>
+            {/* Income Section */}
             <View className="flex flex-row justify-between items-center my-6 px-4">
-              <Text className=" font-psemibold text-xl text-primary">
+              <Text className="font-psemibold text-xl text-primary">
                 Income Budgets
               </Text>
               <TouchableOpacity onPress={addIncome}>
@@ -107,8 +138,9 @@ const Budget = () => {
           </View>
 
           <View>
+            {/* Expense Section */}
             <View className="flex flex-row justify-between items-center my-6 px-4">
-              <Text className=" font-psemibold text-xl text-primary">
+              <Text className="font-psemibold text-xl text-primary">
                 Expense Budgets
               </Text>
               <TouchableOpacity onPress={addExpense}>
@@ -116,7 +148,7 @@ const Budget = () => {
               </TouchableOpacity>
             </View>
 
-            <IncomeList incomeList={incomeList} />
+            <ExpenseList expenseList={expenseList} />
           </View>
         </View>
       </ScrollView>

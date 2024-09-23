@@ -60,10 +60,17 @@ const InitialLayout = () => {
         }}
       />
       <Stack.Screen
+        name="(budget)/expense-detail"
+        options={{
+          headerShown: false,
+          headerTitle: 'Expense Detail',
+          headerBackTitle: 'Budget',
+        }}
+      />
+      <Stack.Screen
         name="(budget)/add-expense"
         options={{
           headerShown: false,
-          headerShown: true,
           headerTitle: 'Add expense',
         }}
       />
