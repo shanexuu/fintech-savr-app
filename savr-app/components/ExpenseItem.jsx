@@ -4,15 +4,15 @@ import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { icons } from '../constants'
 
-const IncomeItem = ({ income, category }) => {
+const ExpenseItem = ({ expense, category }) => {
   const router = useRouter()
-  const { icon, color, name, amount } = income
+  const { icon, color, name, amount } = expense
 
-  const onIncomeClick = (income) => {
+  const onExpenseClick = (expense) => {
     router.push({
-      pathname: '/(budget)/income-detail',
+      pathname: '/(budget)/expense-detail',
       params: {
-        incomeId: income.id,
+        expenseId: expense.id,
         categoryId: category.id,
       },
     })
@@ -20,7 +20,7 @@ const IncomeItem = ({ income, category }) => {
   return (
     <TouchableOpacity
       className="flex mx-4 mb-5 bg-white rounded-3xl shadow-md px-4 py-6 mt-5"
-      onPress={() => onIncomeClick(income)}
+      onPress={() => onExpenseClick(expense)}
     >
       <View className="flex flex-row  justify-between ">
         <View className="flex flex-row gap-2">
@@ -58,4 +58,4 @@ const IncomeItem = ({ income, category }) => {
   )
 }
 
-export default IncomeItem
+export default ExpenseItem
