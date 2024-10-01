@@ -19,6 +19,8 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import { useUser } from '@clerk/clerk-expo'
 import { icons } from '../../constants'
+import { calculateTotalActualIncome } from '../../utils/CalculateIncome'
+import { calculateTotalExpectedIncome } from '../../utils/TotalIncome'
 
 const Budget = () => {
   const { user } = useUser()
@@ -46,6 +48,8 @@ const Budget = () => {
         .from('category')
         .select('*')
       if (categoryError) throw categoryError
+
+      const currentIncome = await calculateTotalActualIncome(email)
 
       const incomeWithCategory = incomeData.map((income) => {
         const category = categoryData.find(
@@ -85,10 +89,15 @@ const Budget = () => {
   }
 
   const addIncome = () => {
-    navigation.navigate('(budget)/add-income')
+    navigation.navigate('(budget)/add-income', {
+      onGoBack: () => getBudgetData(), // Trigger data fetch after navigation
+    })
   }
+
   const addExpense = () => {
-    navigation.navigate('(budget)/add-expense')
+    navigation.navigate('(budget)/add-expense', {
+      onGoBack: () => getBudgetData(), // Trigger data fetch after navigation
+    })
   }
 
   useFocusEffect(

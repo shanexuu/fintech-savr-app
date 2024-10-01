@@ -22,6 +22,8 @@ import { supabase } from '../../utils/SupabaseConfig'
 import { useUser, useClerk } from '@clerk/clerk-expo'
 import { useRouter } from 'expo-router'
 
+const defaultCategories = require('../../assets/data/category-data.json')
+
 const AddExpense = () => {
   const { user } = useUser()
   const email = user?.emailAddresses[0]?.emailAddress
@@ -48,9 +50,11 @@ const AddExpense = () => {
   }
 
   // Function to validate and set the amount
-  const handleAmountChange = (value) => {
-    const numericValue = value.replace(/[^0-9]/g, '')
-    setAmount(numericValue)
+  const handleAmountChange = (text) => {
+    // Check if the input is a valid float number or empty string
+    if (/^\d*\.?\d*$/.test(text)) {
+      setAmount(text) // Update the state with the valid input
+    }
   }
 
   // Fetch expense categories from Supabase
@@ -64,17 +68,33 @@ const AddExpense = () => {
       .select('*')
       .eq('type', 'expense')
 
-    if (data) {
-      setCategories(data)
-    }
-
     if (error) {
       console.error('Error fetching categories:', error)
+      setCategories(defaultCategories)
+      return
+    }
+
+    if (data && data.length > 0) {
+      const expenseDefaultCategories = defaultCategories.filter(
+        (defaultCat) => defaultCat.type === 'expense'
+      )
+
+      const mergedCategories = expenseDefaultCategories.map((defaultCat) => {
+        const userCategory = data.find(
+          (supabaseCat) => supabaseCat.category_id === defaultCat.category_id
+        )
+        return userCategory || defaultCat
+      })
+      setCategories(mergedCategories)
+    } else {
+      setCategories(defaultCategories)
     }
   }
 
   // Create expense record
   const onCreateExpense = async () => {
+    const categoryId = category?.id
+
     const { data, error } = await supabase
       .from('expense') // Insert into the expense table
       .insert([
@@ -85,6 +105,7 @@ const AddExpense = () => {
           period: selectedOption,
           color: selectedColor,
           created_by: email,
+          category_id: categoryId,
         },
       ])
       .select()
@@ -189,7 +210,7 @@ const AddExpense = () => {
                     ref={inputRef}
                     placeholder="0"
                     value={amount}
-                    keyboardType="numeric"
+                    keyboardType="decimal-pad"
                     onChangeText={handleAmountChange}
                     className="font-pregular text-lg mb-[2px]"
                   />
@@ -199,28 +220,30 @@ const AddExpense = () => {
 
             <View className="pb-4 mb-5">
               <Text className="font-pmedium text-lg mb-4">How often?</Text>
-              <View className="flex flex-row items-center space-x-4">
-                {['Weekly', 'Monthly', 'Yearly'].map((option, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    onPress={() => setSelectedOption(option)}
-                    className={`flex flex-row justify-center items-center h-10 px-4 rounded-3xl ${
-                      selectedOption === option
-                        ? 'bg-primary'
-                        : 'bg-white border'
-                    }`}
-                  >
-                    <Text
-                      className={`font-pregular text-base text-center ${
+              <View className="flex flex-row flex-wrap items-center gap-2">
+                {['Weekly', 'Monthly', 'Yearly', 'One off'].map(
+                  (option, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      onPress={() => setSelectedOption(option)}
+                      className={`flex flex-row justify-center items-center h-10 px-4 rounded-3xl ${
                         selectedOption === option
-                          ? 'text-gray-200'
-                          : 'text-primary'
+                          ? 'bg-primary'
+                          : 'bg-white border'
                       }`}
                     >
-                      {option}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
+                      <Text
+                        className={`font-pregular text-base text-center ${
+                          selectedOption === option
+                            ? 'text-gray-200'
+                            : 'text-primary'
+                        }`}
+                      >
+                        {option}
+                      </Text>
+                    </TouchableOpacity>
+                  )
+                )}
               </View>
             </View>
           </View>

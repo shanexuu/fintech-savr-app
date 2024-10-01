@@ -42,30 +42,82 @@ const TransactionItem = memo(({ item, accountsData }) => {
         ? 'Services'
         : item.category?.groups?.personal_finance?.name || item.type
       : 'Uncategorised'
+
   const getCategories = async () => {
-    const { data, error } = await supabase.from('category').select('*')
-    if (error) {
-      console.error('Error fetching category details:', error)
-      return
-    }
+    try {
+      if (categoryName === 'Uncategorised') {
+        // Fetch transaction from Supabase based on transaction_id
+        const { data: transactionData, error: transactionError } =
+          await supabase
+            .from('transaction')
+            .select('category_id')
+            .eq('transaction_id', item._id)
 
-    const matchedCategory = data.find((cat) =>
-      cat.name.toLowerCase().includes(categoryName.toLowerCase())
-    )
+        if (transactionError) {
+          console.error('Error fetching transaction details:', transactionError)
+          return
+        }
 
-    if (matchedCategory) {
-      setCategoryDetails({
-        icon: matchedCategory.icon,
-        color: matchedCategory.color,
-      })
+        // Check if there is a category_id in the transaction
+        if (transactionData?.length > 0 && transactionData[0].category_id) {
+          const categoryId = transactionData[0].category_id
+
+          // Fetch the corresponding category details from the category table
+          const { data: categoryData, error: categoryError } = await supabase
+            .from('category')
+            .select('*')
+            .eq('id', categoryId)
+
+          if (categoryError) {
+            console.error('Error fetching category details:', categoryError)
+            return
+          }
+
+          if (categoryData.length > 0) {
+            const matchedCategory = categoryData[0]
+            setCategoryDetails({
+              icon: matchedCategory.icon,
+              color: matchedCategory.color,
+              name: matchedCategory.name, // Store the category name for the title
+            })
+          }
+        } else {
+          // If no category_id or still uncategorised, use default values
+          setCategoryDetails({
+            icon: '❓',
+            color: '#D9D8F7',
+            name: 'Uncategorised', // Set default name as 'Uncategorised'
+          })
+        }
+      } else {
+        // Use the regular category data if not Uncategorised
+        const { data: categoryData, error: categoryError } = await supabase
+          .from('category')
+          .select('*')
+          .ilike('name', `%${categoryName}%`)
+
+        if (categoryError) {
+          console.error('Error fetching category details:', categoryError)
+          return
+        }
+
+        if (categoryData.length > 0) {
+          const matchedCategory = categoryData[0]
+          setCategoryDetails({
+            icon: matchedCategory.icon,
+            color: matchedCategory.color,
+            name: matchedCategory.name, // Store the category name for the title
+          })
+        }
+      }
+    } catch (error) {
+      console.error('Unexpected error:', error)
     }
   }
 
   useEffect(() => {
-    if (categoryName) {
-      getCategories()
-    }
-  }, [categoryName])
+    getCategories()
+  }, [categoryName, item._id])
 
   return (
     <TouchableOpacity>
@@ -104,24 +156,13 @@ const TransactionItem = memo(({ item, accountsData }) => {
 
         <View>
           <CategoryBtn
-            icon={
-              item.type === 'DEBIT' && item.category == null
-                ? '❓'
-                : categoryDetails?.icon
-            }
+            icon={categoryDetails?.icon || '❓'}
             title={
               item.type === 'TRANSFER'
                 ? 'Transfer'
-                : item.type === 'PAYMENT' ||
-                  (item.type === 'DEBIT' && item.category == null)
-                ? 'Uncategorised'
-                : categoryName
+                : categoryDetails?.name || 'Uncategorised'
             }
-            iconStyles={
-              item.type === 'DEBIT' && item.category == null
-                ? '#D9D8F7'
-                : categoryDetails?.color
-            }
+            iconStyles={categoryDetails?.color || '#D9D8F7'}
           />
         </View>
       </View>

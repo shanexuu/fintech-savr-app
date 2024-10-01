@@ -52,13 +52,6 @@ const IncomeData = ({ startDate, endDate, textStyles }) => {
       <Text className={`text-primary font-pmedium text-xl ${textStyles}`}>
         ${totalAmount}
       </Text>
-      {/* <FlatList
-        data={incomeData?.items?.flatMap((item) => item.transactions)}
-        keyExtractor={(item, index) => index.toString()} // Ensures each item has a unique key
-        renderItem={({ item }) => (
-          <Text>Transaction Amount: {item.amount}</Text>
-        )}
-      /> */}
     </View>
   )
 }

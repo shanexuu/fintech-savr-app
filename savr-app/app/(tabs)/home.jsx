@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Modal,
   TouchableWithoutFeedback,
+  RefreshControl,
 } from 'react-native'
 import React, { useState } from 'react'
 import { Link, useRouter } from 'expo-router'
@@ -183,7 +184,10 @@ const Home = () => {
                         Expenses
                       </Text>
                     </View>
-                    <ExpenseData />
+                    <ExpenseData
+                      startDate={startDate}
+                      endDate={endDate}
+                    />
                   </View>
                 </View>
 
