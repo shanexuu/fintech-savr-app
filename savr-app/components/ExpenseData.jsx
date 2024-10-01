@@ -10,7 +10,12 @@ const ExpenseData = ({ startDate, endDate, textStyles }) => {
     error: transactionsError,
   } = useQuery({
     queryKey: ['transactions'],
-    queryFn: () => fetch('/api/transactions').then((res) => res.json()),
+    queryFn: () =>
+      fetch(
+        `/api/transactions?start=${encodeURIComponent(
+          startDate
+        )}&end=${encodeURIComponent(endDate)}`
+      ).then((res) => res.json()),
   })
   if (isTransactionsLoading) {
     return <Spinner visible={true} />

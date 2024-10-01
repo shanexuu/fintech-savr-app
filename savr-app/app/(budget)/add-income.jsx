@@ -22,6 +22,8 @@ import { supabase } from '../../utils/SupabaseConfig'
 import { useUser, useClerk } from '@clerk/clerk-expo'
 import { useRouter } from 'expo-router'
 
+const defaultCategories = require('../../assets/data/category-data.json')
+
 const AddIncome = () => {
   const { user } = useUser()
   const email = user?.emailAddresses[0]?.emailAddress
@@ -48,9 +50,11 @@ const AddIncome = () => {
   }
 
   // Function to validate and set the amount
-  const handleAmountChange = (value) => {
-    const numericValue = value.replace(/[^0-9]/g, '')
-    setAmount(numericValue)
+  const handleAmountChange = (text) => {
+    // Check if the input is a valid float number or empty string
+    if (/^\d*\.?\d*$/.test(text)) {
+      setAmount(text) // Update the state with the valid input
+    }
   }
 
   // Fetch income details from Supabase
@@ -59,18 +63,35 @@ const AddIncome = () => {
   }, [])
 
   const getIncomeDetail = async () => {
+    // Fetch categories from Supabase
     const { data, error } = await supabase
       .from('category')
       .select('*')
       .eq('type', 'income')
-      .eq('created_by', email)
-
-    if (data) {
-      setCategories(data)
-    }
 
     if (error) {
       console.error('Error fetching categories:', error)
+      setCategories(defaultCategories) // Fallback to default categories
+      return
+    }
+
+    if (data && data.length > 0) {
+      const incomeDefaultCategories = defaultCategories.filter(
+        (defaultCat) => defaultCat.type === 'income'
+      )
+
+      // Merge Supabase data with default categories (local JSON)
+      const mergedCategories = incomeDefaultCategories.map((defaultCat) => {
+        const userCategory = data.find(
+          (supabaseCat) => supabaseCat.category_id === defaultCat.category_id
+        )
+        return userCategory || defaultCat // Use userCategory if found, otherwise defaultCat
+      })
+
+      setCategories(mergedCategories)
+    } else {
+      // No categories in Supabase, fallback to default categories
+      setCategories(defaultCategories)
     }
   }
 
@@ -195,7 +216,7 @@ const AddIncome = () => {
                     ref={inputRef}
                     placeholder="0"
                     value={amount}
-                    keyboardType="numeric"
+                    keyboardType="decimal-pad"
                     onChangeText={handleAmountChange}
                     className="font-pregular text-lg mb-[2px]"
                   />
@@ -205,28 +226,30 @@ const AddIncome = () => {
 
             <View className="pb-4 mb-5">
               <Text className="font-pmedium text-lg mb-4">How often?</Text>
-              <View className="flex flex-row items-center space-x-4">
-                {['Weekly', 'Monthly', 'Yearly'].map((option, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    onPress={() => setSelectedOption(option)}
-                    className={`flex flex-row justify-center items-center h-10 px-4 rounded-3xl ${
-                      selectedOption === option
-                        ? 'bg-primary'
-                        : 'bg-white border'
-                    }`}
-                  >
-                    <Text
-                      className={`font-pregular text-base text-center ${
+              <View className="flex flex-row flex-wrap items-center gap-2">
+                {['Weekly', 'Monthly', 'Yearly', 'One off'].map(
+                  (option, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      onPress={() => setSelectedOption(option)}
+                      className={`flex flex-row justify-center items-center h-10 px-4 rounded-3xl ${
                         selectedOption === option
-                          ? 'text-gray-200'
-                          : 'text-primary'
+                          ? 'bg-primary'
+                          : 'bg-white border'
                       }`}
                     >
-                      {option}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
+                      <Text
+                        className={`font-pregular text-base text-center ${
+                          selectedOption === option
+                            ? 'text-gray-200'
+                            : 'text-primary'
+                        }`}
+                      >
+                        {option}
+                      </Text>
+                    </TouchableOpacity>
+                  )
+                )}
               </View>
             </View>
           </View>

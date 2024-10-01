@@ -32,7 +32,7 @@ const CategoryBtn = ({
         className={`w-8 h-8  rounded-full flex justify-center items-center`}
         style={{ backgroundColor: iconStyles }}
       >
-        <Text className="w-5 h-5 opacity-90">{icon}</Text>
+        <Text className="w-5 h-5">{icon}</Text>
       </View>
 
       <Text

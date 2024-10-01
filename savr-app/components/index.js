@@ -19,6 +19,7 @@ import ExpenseList from './ExpenseList'
 import ExpenseItem from './ExpenseItem'
 import AccountList from './AccountList'
 import Header from './Header'
+import CalculatenIncome from './CalculateIncome'
 
 export {
   Onboarding,
@@ -42,4 +43,5 @@ export {
   ExpenseList,
   ExpenseItem,
   Header,
+  CalculatenIncome,
 }

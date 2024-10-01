@@ -1,0 +1,137 @@
+[
+  {
+    "id": 1,
+    "name": "Housing",
+    "created_by": "admin",
+    "icon": "🏠",
+    "color": "#D9D8F7",
+    "category_id": "exp-1",
+    "type": "expense"
+  },
+  {
+    "id": 2,
+    "name": "Appearance",
+    "created_by": "admin",
+    "icon": "🕶️",
+    "color": "#E9D27D",
+    "category_id": "exp-2",
+    "type": "expense"
+  },
+  {
+    "id": 3,
+    "name": "Education",
+    "created_by": "admin",
+    "icon": "🎓",
+    "color": "#CCE4C4",
+    "category_id": "exp-3",
+    "type": "expense"
+  },
+  {
+    "id": 4,
+    "name": "Food",
+    "created_by": "admin",
+    "icon": "🥑",
+    "color": "#CCE4C4",
+    "category_id": "exp-4",
+    "type": "expense"
+  },
+  {
+    "id": 5,
+    "name": "Health",
+    "created_by": "admin",
+    "icon": "🏥",
+    "color": "#D9D8F7",
+    "category_id": "exp-5",
+    "type": "expense"
+  },
+  {
+    "id": 6,
+    "name": "Household",
+    "created_by": "admin",
+    "icon": "🏠",
+    "color": "#D9D8F7",
+    "category_id": "exp-6",
+    "type": "expense"
+  },
+  {
+    "id": 7,
+    "name": "Lifestyle",
+    "created_by": "admin",
+    "icon": "🎮",
+    "color": "#EAD9D5",
+    "category_id": "exp-7",
+    "type": "expense"
+  },
+  {
+    "id": 8,
+    "name": "Services",
+    "created_by": "admin",
+    "icon": "💼",
+    "color": "#EAD9D5",
+    "category_id": "exp-8",
+    "type": "expense"
+  },
+  {
+    "id": 9,
+    "name": "Transport",
+    "created_by": "admin",
+    "icon": "🚘",
+    "color": "#CCE4C4",
+    "category_id": "exp-9",
+    "type": "expense"
+  },
+  {
+    "id": 10,
+    "name": "Utilities",
+    "created_by": "admin",
+    "icon": "⚡️",
+    "color": "#EAD9D5",
+    "category_id": "exp-10",
+    "type": "expense"
+  },
+  {
+    "id": 11,
+    "name": "Uncategorised",
+    "created_by": "admin",
+    "icon": "❓",
+    "color": "#D9D8F7",
+    "category_id": "exp-11",
+    "type": "expense"
+  },
+  {
+    "id": 12,
+    "name": "Transfer",
+    "created_by": "admin",
+    "icon": "💰",
+    "color": "#E9D27D",
+    "category_id": "exp-12",
+    "type": "expense"
+  },
+  {
+    "id": 13,
+    "name": "income",
+    "created_by": "admin",
+    "icon": "💵",
+    "color": "#E9D27D",
+    "category_id": "inc-1",
+    "type": "income"
+  },
+  {
+    "id": 14,
+    "name": "investments",
+    "created_by": "admin",
+    "icon": "💸",
+    "color": "#D9D8F7",
+    "category_id": "inc-2",
+    "type": "income"
+  },
+  {
+    "id": 15,
+    "name": "One off",
+    "created_by": "admin",
+    "icon": "☝️",
+    "color": "#CCE4C4",
+    "category_id": "inc-3",
+    "type": "income"
+  }
+]
