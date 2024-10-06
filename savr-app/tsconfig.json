@@ -11,6 +11,7 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
-    "app/(tabs)/transactions.jsx"
+    "app/(tabs)/transactions.jsx",
+    "app/api/expenses+api.jsx"
   ]
 }

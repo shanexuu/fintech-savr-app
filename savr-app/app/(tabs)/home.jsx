@@ -9,7 +9,7 @@ import {
   TouchableWithoutFeedback,
   RefreshControl,
 } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useRouter } from 'expo-router'
 import { useUser, useClerk } from '@clerk/clerk-expo'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -21,13 +21,18 @@ import {
   ExpenseData,
   RoundBtn,
   AccountList,
+  CurrentMonthExpense,
 } from '../../components'
 import { useNavigation } from '@react-navigation/native'
+import { calculateMonthlyIncome } from '../../utils/CalculateMonthlyIncome'
+import { calculateExpense } from '../../utils/CalculateExpense'
 
 const Home = () => {
   const { signOut } = useClerk()
   const router = useRouter()
   const [modalVisible, setModalVisible] = useState(false)
+  const [monthlyIncome, setMonthlyIncome] = useState(0)
+  const [montExpense, setMonthlyExpense] = useState(0)
 
   const handleSignOut = async () => {
     await signOut()
@@ -35,7 +40,7 @@ const Home = () => {
   }
   const { user } = useUser()
   const username = user?.username || user?.firstName || 'Anonymous'
-
+  const email = user?.emailAddresses[0]?.emailAddress
   const navigation = useNavigation()
 
   const handlePress = () => {
@@ -57,6 +62,19 @@ const Home = () => {
     59,
     59
   ).toISOString()
+
+  // Fetch monthly income on component mount and when the email changes
+  useEffect(() => {
+    const fetchIncome = async (email) => {
+      if (email) {
+        const monthlyIncome = await calculateMonthlyIncome(email) // Call the correct function
+
+        setMonthlyIncome(monthlyIncome) // Set the fetched income
+        console.log(monthlyIncome)
+      }
+    }
+    fetchIncome(email)
+  }, [email])
 
   return (
     <SafeAreaView
@@ -167,10 +185,10 @@ const Home = () => {
                         Income
                       </Text>
                     </View>
-                    <IncomeData
-                      startDate={startDate}
-                      endDate={endDate}
-                    />
+
+                    <Text className="text-primary font-pmedium text-xl">
+                      ${monthlyIncome.toFixed(2)}
+                    </Text>
                   </View>
 
                   <View className="flex justify-center">
@@ -184,10 +202,7 @@ const Home = () => {
                         Expenses
                       </Text>
                     </View>
-                    <ExpenseData
-                      startDate={startDate}
-                      endDate={endDate}
-                    />
+                    <CurrentMonthExpense />
                   </View>
                 </View>
 

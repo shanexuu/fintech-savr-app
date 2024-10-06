@@ -11,7 +11,7 @@ npm-debug.*
 web-build/
 
 utils/SupabaseConfig.jsx
-
+expo-env.d.ts
 # macOS
 .DS_Store
 

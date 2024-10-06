@@ -94,6 +94,7 @@ const AddExpense = () => {
   // Create expense record
   const onCreateExpense = async () => {
     const categoryId = category?.id
+    const categoryName = category?.name
 
     const { data, error } = await supabase
       .from('expense') // Insert into the expense table
