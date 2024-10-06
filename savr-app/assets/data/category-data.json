@@ -109,7 +109,7 @@
   },
   {
     "id": 13,
-    "name": "income",
+    "name": "Income",
     "created_by": "admin",
     "icon": "💵",
     "color": "#E9D27D",
@@ -118,7 +118,7 @@
   },
   {
     "id": 14,
-    "name": "investments",
+    "name": "Investments",
     "created_by": "admin",
     "icon": "💸",
     "color": "#D9D8F7",

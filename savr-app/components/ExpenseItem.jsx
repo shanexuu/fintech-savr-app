@@ -1,12 +1,37 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native'
 import { useRouter } from 'expo-router'
-import React from 'react'
 import { useNavigation } from '@react-navigation/native'
+import { useUser } from '@clerk/clerk-expo'
+
 import { icons } from '../constants'
+import React, { useState, useEffect } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { calculateTotalActualExpense } from '../utils/CalculateExpense'
+import { calculateTotalExpectedExpense } from '../utils/TotalExpense'
 
 const ExpenseItem = ({ expense, category }) => {
   const router = useRouter()
   const { icon, color, name, amount } = expense
+
+  const [monthlyExpense, setMonthlyExpense] = useState(null)
+  const [totalExpense, setTotalExpense] = useState(null)
+
+  useEffect(() => {
+    const fetchIncomeData = async (email) => {
+      if (email) {
+        const actualIncome = await calculateTotalActualIncome(email)
+        const expectedIncome = await calculateTotalExpectedIncome(email)
+
+        const totalIncome = actualIncome.incomeByCategory[category.id] || 0
+        const monthlyIncome = expectedIncome.incomeByCategory[category.id] || 0
+
+        setTotalIncome(totalIncome)
+        setMonthlyIncome(monthlyIncome)
+      }
+    }
+
+    fetchIncomeData(email)
+  }, [email, income, category.id])
 
   const onExpenseClick = (expense) => {
     router.push({
@@ -17,6 +42,7 @@ const ExpenseItem = ({ expense, category }) => {
       },
     })
   }
+
   return (
     <TouchableOpacity
       className="flex mx-4 mb-5 bg-white rounded-3xl shadow-md px-4 py-6 mt-5"

@@ -20,6 +20,7 @@ import ExpenseItem from './ExpenseItem'
 import AccountList from './AccountList'
 import Header from './Header'
 import CalculatenIncome from './CalculateIncome'
+import CurrentMonthExpense from './CurrentMonthExpense'
 
 export {
   Onboarding,
@@ -44,4 +45,5 @@ export {
   ExpenseItem,
   Header,
   CalculatenIncome,
+  CurrentMonthExpense,
 }
