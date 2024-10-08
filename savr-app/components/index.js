@@ -21,6 +21,10 @@ import AccountList from './AccountList'
 import Header from './Header'
 import CalculatenIncome from './CalculateIncome'
 import CurrentMonthExpense from './CurrentMonthExpense'
+import DefaultButton from './DefaultButton'
+import MoreHeader from './MoreHeader'
+import MerchantItem from './MerchantItem'
+import MerchantList from './MerchantList'
 
 export {
   Onboarding,
@@ -46,4 +50,8 @@ export {
   Header,
   CalculatenIncome,
   CurrentMonthExpense,
+  DefaultButton,
+  MoreHeader,
+  MerchantItem,
+  MerchantList,
 }

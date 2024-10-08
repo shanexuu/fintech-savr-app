@@ -12,7 +12,7 @@ const Transactions = () => {
       edges={['top', 'left', 'right']}
       className="bg-white h-full flex "
     >
-      <View className="h-full bg-white ">
+      <View className="h-full bg-white">
         <Header
           headertext="Transactions"
           icon={icons.Info}

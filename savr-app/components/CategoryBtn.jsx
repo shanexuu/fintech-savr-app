@@ -5,6 +5,7 @@ import {
   Image,
   View,
   Button,
+  Modal,
 } from 'react-native'
 import React from 'react'
 import { icons } from '../constants'
@@ -29,10 +30,10 @@ const CategoryBtn = ({
       disabled={isLoading}
     >
       <View
-        className={`w-8 h-8  rounded-full flex justify-center items-center`}
+        className={`w-8 h-8 rounded-full flex justify-center items-center`}
         style={{ backgroundColor: iconStyles }}
       >
-        <Text className="w-5 h-5">{icon}</Text>
+        <Text className="text-center">{icon}</Text>
       </View>
 
       <Text

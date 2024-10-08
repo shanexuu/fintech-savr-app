@@ -110,7 +110,7 @@ const TabsLayout = () => {
           name="more"
           options={{
             title: 'More',
-            headerShown: true,
+            headerShown: false,
             headerStyle: {
               backgroundColor: '#fff',
               elevation: 0,
