@@ -16,23 +16,6 @@ const ExpenseItem = ({ expense, category }) => {
   const [monthlyExpense, setMonthlyExpense] = useState(null)
   const [totalExpense, setTotalExpense] = useState(null)
 
-  useEffect(() => {
-    const fetchIncomeData = async (email) => {
-      if (email) {
-        const actualIncome = await calculateTotalActualIncome(email)
-        const expectedIncome = await calculateTotalExpectedIncome(email)
-
-        const totalIncome = actualIncome.incomeByCategory[category.id] || 0
-        const monthlyIncome = expectedIncome.incomeByCategory[category.id] || 0
-
-        setTotalIncome(totalIncome)
-        setMonthlyIncome(monthlyIncome)
-      }
-    }
-
-    fetchIncomeData(email)
-  }, [email, income, category.id])
-
   const onExpenseClick = (expense) => {
     router.push({
       pathname: '/(budget)/expense-detail',

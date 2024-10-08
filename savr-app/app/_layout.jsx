@@ -83,6 +83,47 @@ const InitialLayout = () => {
           headerTitle: 'Add expense',
         }}
       />
+
+      <Stack.Screen
+        name="(more)/accounts"
+        options={{
+          headerShown: false,
+          headerTitle: 'Accounts',
+          headerBackTitle: 'More',
+        }}
+      />
+      <Stack.Screen
+        name="(more)/connect-accounts"
+        options={{
+          headerShown: false,
+          headerTitle: 'Connect Account',
+          headerBackTitle: 'More',
+        }}
+      />
+      <Stack.Screen
+        name="(more)/merchants"
+        options={{
+          headerShown: false,
+          headerTitle: 'Merchants',
+          headerBackTitle: 'More',
+        }}
+      />
+      <Stack.Screen
+        name="(more)/settings"
+        options={{
+          headerShown: false,
+          headerTitle: 'Settings',
+          headerBackTitle: 'More',
+        }}
+      />
+      <Stack.Screen
+        name="(more)/merchants-details"
+        options={{
+          headerShown: false,
+          headerTitle: 'Merchants Details',
+          headerBackTitle: 'More',
+        }}
+      />
     </Stack>
   )
 }

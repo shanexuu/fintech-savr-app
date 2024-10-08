@@ -15,6 +15,7 @@ module.exports = {
           100: '#545454',
           200: '#F6F7F9',
           300: '#ECEDEE',
+          400: '#aeaeae',
         },
         purple: {
           DEFAULT: '#C0AFF4',
@@ -26,7 +27,7 @@ module.exports = {
         pink: {
           100: '#EAD9D5',
         },
-        yellow: { 100: '#E9D27D' },
+        yellow: { 300: '#E9D27D' },
         brown: { 100: '#D0AF92' },
       },
 

@@ -30,6 +30,7 @@ const IncomeDetail = () => {
 
   useEffect(() => {
     incomeId && getIncomeDetail()
+    console.log(incomeId)
   }, [incomeId])
 
   const getIncomeDetail = async () => {

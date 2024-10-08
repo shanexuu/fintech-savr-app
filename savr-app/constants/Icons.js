@@ -1,6 +1,6 @@
 import home from '../assets/images/house-fill.png'
 import budget from '../assets/images/money-wavy-fill.png'
-import transaction from '../assets/images/bank-fill.png'
+import transaction from '../assets/images/file-text.png'
 import more from '../assets/images/dots-three-bold.png'
 import eye from '../assets/images/eye.png'
 import eyeHide from '../assets/images/eye-slash.png'
@@ -30,6 +30,10 @@ import CircleUp from '../assets/images/circle-up.png'
 import Close from '../assets/images/x-bold.png'
 import Info from '../assets/images/info.png'
 import Hand from '../assets/images/hand.png'
+import User from '../assets/images/cards.png'
+import Link from '../assets/images/link.png'
+import Store from '../assets/images/storefront.png'
+import Settings from '../assets/images/gear.png'
 
 export default {
   home,
@@ -64,4 +68,8 @@ export default {
   CircleUp,
   Info,
   Hand,
+  User,
+  Link,
+  Store,
+  Settings,
 }

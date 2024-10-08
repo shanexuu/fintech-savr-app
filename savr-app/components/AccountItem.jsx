@@ -31,17 +31,17 @@ const AccountItem = memo(({ item, accountsData, isLast }) => {
           className="w-10 h-10 rounded-full"
         />
         <View className="ml-4">
-          <Text className="font-pmedium text-base">{item.name}</Text>
-          <Text className="font-pmedium text-base text-green-500">
-            ${item?.balance?.current}
+          <Text className="font-psemibold text-base">{item.name}</Text>
+          <Text className="font-pregular text-sm text-gray-400">
+            {item?.formatted_account}
           </Text>
         </View>
       </View>
-
-      <Switch
-        onValueChange={toggleSwitch}
-        value={isEnabled}
-      />
+      <View>
+        <Text className="font-pmedium text-base text-green-500">
+          ${item?.balance?.current}
+        </Text>
+      </View>
     </View>
   )
 })
