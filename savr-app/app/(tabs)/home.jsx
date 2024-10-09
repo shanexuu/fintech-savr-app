@@ -40,9 +40,12 @@ const Home = () => {
   }
   const { user } = useUser()
   const username = user?.username || user?.firstName || 'Anonymous'
+  const avatar = user?.imageUrl
   const email = user?.emailAddresses[0]?.emailAddress
   const navigation = useNavigation()
-
+  const avatarPress = () => {
+    navigation.navigate('(more)/settings')
+  }
   const handlePress = () => {
     navigation.navigate('transactions')
   }
@@ -91,10 +94,15 @@ const Home = () => {
                 <View className="flex items-center">
                   <View className="flex flex-row gap-4">
                     <View className="flex items-center justify-center w-12 h-12 bg-white rounded-full">
-                      <Image
-                        source={images.logo}
-                        className="w-8 h-8"
-                      />
+                      <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={avatarPress}
+                      >
+                        <Image
+                          source={{ uri: avatar }}
+                          className="w-12 h-12  rounded-full"
+                        />
+                      </TouchableOpacity>
                     </View>
                     <View className="felx items-center">
                       <Text className="font-pregular text-lg text-primary">
