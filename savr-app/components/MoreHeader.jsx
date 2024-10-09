@@ -10,6 +10,7 @@ const MoreHeader = ({
   containerStyle,
   handlePress,
   handleImagePress,
+  handleButtonPress,
 }) => {
   return (
     <View
@@ -36,6 +37,7 @@ const MoreHeader = ({
           <Image
             source={icon}
             className="w-7 h-7"
+            onPress={handleButtonPress}
           />
         </TouchableOpacity>
       </View>

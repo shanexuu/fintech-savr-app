@@ -7,6 +7,7 @@ import {
   RefreshControl,
 } from 'react-native'
 import React, { useEffect, useState, useCallback } from 'react'
+import { Link, useRouter } from 'expo-router'
 import {
   RoundBtn,
   CircularChart,
@@ -24,11 +25,16 @@ import { calculateTotalExpectedIncome } from '../../utils/TotalIncome'
 
 const Budget = () => {
   const { user } = useUser()
+  const router = useRouter()
   const email = user?.emailAddresses[0]?.emailAddress
   const navigation = useNavigation()
   const [incomeList, setIncomeList] = useState([])
   const [expenseList, setExpenseList] = useState([])
   const [loading, setLoading] = useState(false)
+
+  const avatarPress = () => {
+    navigation.navigate('(more)/settings')
+  }
 
   useEffect(() => {
     getBudgetData()
@@ -125,6 +131,7 @@ const Budget = () => {
               headertext="Budget"
               icon={icons.Info}
               containerStyle="mb-8"
+              avatarPress={avatarPress}
             />
           </View>
 

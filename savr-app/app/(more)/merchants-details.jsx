@@ -181,10 +181,13 @@ const MerchantDetails = () => {
           {/* Header */}
           <View className="flex-row justify-center w-full items-center mb-2 mt-8">
             <View className="flex justify-center items-center">
-              <Image
-                className="h-32 w-32 rounded-full"
-                source={{ uri: logo }}
-              />
+              <View className="h-45 w-45 rounded-full shadow-lg bg-white flex justify-center items-center">
+                <Image
+                  className="h-32 w-32 rounded-full"
+                  source={{ uri: logo }}
+                />
+              </View>
+
               <Text className="font-psemibold text-xl mt-5">
                 {merchantName}
               </Text>

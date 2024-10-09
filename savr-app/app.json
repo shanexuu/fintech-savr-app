@@ -32,6 +32,18 @@
         {
           "origin": "https://savr.dev"
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow Svar to access your photos."
+        }
+      ],
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow Svar to use Face ID."
+        }
       ]
     ],
     "experiments": {
