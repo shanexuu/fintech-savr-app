@@ -50,6 +50,8 @@ const Home = () => {
     navigation.navigate('transactions')
   }
 
+  const handleBellPress = () => {}
+
   // Get the current year and month
   const currentDate = new Date()
   const currentYear = currentDate.getFullYear()
@@ -115,16 +117,16 @@ const Home = () => {
                   </View>
                 </View>
                 <View className="flex flex-row gap-4 items-center">
-                  <Image
-                    source={icons.bell}
-                    className="w-6 h-6"
-                    resizeMode="contain"
-                  />
-                  <Image
-                    source={icons.settings}
-                    className="w-6 h-6"
-                    resizeMode="contain"
-                  />
+                  <TouchableOpacity
+                    onPress={handleBellPress}
+                    activeOpacity={0.7}
+                  >
+                    <Image
+                      source={icons.bell}
+                      className="w-6 h-6"
+                      resizeMode="contain"
+                    />
+                  </TouchableOpacity>
                 </View>
               </View>
 

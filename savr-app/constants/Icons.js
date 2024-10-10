@@ -36,6 +36,7 @@ import Store from '../assets/images/storefront.png'
 import Settings from '../assets/images/gear.png'
 import Camera from '../assets/images/camera.png'
 import Check from '../assets/images/check.png'
+import Key from '../assets/images/key.png'
 
 export default {
   home,
@@ -76,4 +77,5 @@ export default {
   Settings,
   Camera,
   Check,
+  Key,
 }

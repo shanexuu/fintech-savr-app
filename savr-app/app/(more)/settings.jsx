@@ -10,7 +10,7 @@ import {
   ScrollView,
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { MoreHeader, CustomButton } from '../../components'
+import { MoreHeader, CustomButton, DefaultButton } from '../../components'
 import { icons, images } from '../../constants'
 import { useRouter } from 'expo-router'
 import { useAuth, useUser, useClerk } from '@clerk/clerk-expo'
@@ -48,14 +48,15 @@ const Settings = () => {
 
     if (!result.canceled) {
       const base64 = `data:image/png;base64,${result.assets[0].base64}`
-      console.log(base64)
 
       user?.setProfileImage({
         file: base64,
       })
     }
   }
-  const passwordPress = () => {}
+  const passwordPress = () => {
+    navigation.navigate('(more)/change-password')
+  }
   const handleButtonPress = async () => {
     try {
       // This is not working!
@@ -155,7 +156,7 @@ const Settings = () => {
           <Text className="font-bold mt-8 text-primary text-2xl">Security</Text>
         </View>
 
-        <View className="px-4 mt-10 flex flex-row justify-between">
+        {/* <View className="px-4 mt-10 flex flex-row justify-between">
           <View className="flex flex-row items-center bg-white py-4 rounded-xl px-5">
             <Text className="font-pregular text-lg mr-2">Face ID</Text>
             <Switch
@@ -170,19 +171,15 @@ const Settings = () => {
               value={isEnabled}
             />
           </View>
-        </View>
-        <View className="mx-4 mt-6 bg-white rounded-xl">
-          <TouchableOpacity
-            className="flex  flex-row justify-between p-5 items-center"
-            onPress={passwordPress}
-          >
-            <Text className="font-pregular text-lg mr-2">Change password</Text>
-            <Image
-              source={icons.Next}
-              className="h-5 w-5"
-            />
-          </TouchableOpacity>
-        </View>
+        </View> */}
+
+        <DefaultButton
+          title="Change password"
+          handlePress={passwordPress}
+          containerStyles="mt-7 mx-4"
+          icon="Key"
+          iconBg="purple-100"
+        />
 
         <View className="flex px-4 mt-10">
           <CustomButton

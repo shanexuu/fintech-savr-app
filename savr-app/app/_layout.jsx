@@ -117,6 +117,23 @@ const InitialLayout = () => {
         }}
       />
       <Stack.Screen
+        name="(more)/change-password"
+        options={{
+          headerShown: false,
+          headerTitle: 'Change Password',
+          headerBackTitle: 'Settings',
+        }}
+      />
+      <Stack.Screen
+        name="(more)/akahu-webview"
+        options={{
+          headerShown: false,
+          headerTitle: 'Connect your account',
+          headerBackTitle: 'Settings',
+        }}
+      />
+
+      <Stack.Screen
         name="(more)/merchants-details"
         options={{
           headerShown: false,

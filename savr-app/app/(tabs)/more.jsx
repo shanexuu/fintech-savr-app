@@ -1,4 +1,4 @@
-import { View, Text, Button } from 'react-native'
+import { View, Text, Button, Linking } from 'react-native'
 import React from 'react'
 import { Link, useRouter } from 'expo-router'
 import { useUser, useClerk } from '@clerk/clerk-expo'
@@ -21,7 +21,7 @@ const More = () => {
     navigation.navigate('(more)/accounts')
   }
   const onConAccsPress = () => {
-    navigation.navigate('(more)/connect-accounts')
+    navigation.navigate('(more)/akahu-webview')
   }
   const onMerchantsPress = () => {
     navigation.navigate('(more)/merchants')
@@ -29,6 +29,7 @@ const More = () => {
   const onSettingsPress = () => {
     navigation.navigate('(more)/settings')
   }
+
   const { user } = useUser()
   const username = user?.username || user?.firstName || 'Anonymous'
   return (
