@@ -1,6 +1,6 @@
 // Import the necessary libraries
 import { serve } from 'https://deno.land/x/sift/mod.ts'
-import { createClient } from 'https://esm.sh/@supabase/supabase-js' // Make sure to import the Supabase client
+import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 
 // Your Supabase environment
 const supabaseUrl = Deno.env.get('SUPABASE_URL')
@@ -10,10 +10,9 @@ const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY')
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 const scheduling = async () => {
-  const appToken = Deno.env.get('APP_TOKEN') // Fetch app token from environment variables
-  const userToken = Deno.env.get('USER_TOKEN') // Fetch user token from environment variables
+  const appToken = Deno.env.get('APP_TOKEN')
+  const userToken = Deno.env.get('USER_TOKEN')
 
-  // Check if the tokens are defined
   if (!appToken || !userToken) {
     console.error('Missing Akahu app or user token.')
     return
@@ -29,7 +28,6 @@ const scheduling = async () => {
       },
     })
 
-    // Check for a successful response
     if (!response.ok) {
       console.error('Failed to fetch transactions:', response.statusText)
       return
@@ -38,7 +36,6 @@ const scheduling = async () => {
     const data = await response.json()
     const transactions = data.items
 
-    // Insert transactions into the Supabase database
     for (const transaction of transactions) {
       const {
         _id,
@@ -53,27 +50,49 @@ const scheduling = async () => {
         meta,
       } = transaction
 
-      // Insert or ignore to avoid duplication
-      const { error } = await supabase.from('all_transactions').upsert({
-        akahu_id: _id,
-        date: new Date(date), // Ensure the date is a valid JavaScript Date object
-        description,
-        amount,
-        balance,
-        type,
-        account_id: _account,
-        merchant_name: merchant?.name,
-        merchant_nzbn: merchant?.nzbn,
-        merchant_website: merchant?.website,
-        category_name: category?.name,
-        category_group: category?.groups?.personal_finance?.name,
-        card_suffix: meta?.card_suffix,
-        reference: meta?.reference,
-        logo: meta?.logo,
-      })
+      // Check if the transaction with this akahu_id already exists
+      const { data: existingTransaction, error: checkError } = await supabase
+        .from('all_transactions')
+        .select('akahu_id')
+        .eq('akahu_id', _id)
+        .single() // Fetch only one record
 
-      if (error) {
-        console.error('Error inserting transaction:', error.message)
+      if (checkError && checkError.code !== 'PGRST116') {
+        // PGRST116: No matching record found
+        console.error(
+          'Error checking for existing transaction:',
+          checkError.message
+        )
+        continue
+      }
+
+      if (!existingTransaction) {
+        // Insert the transaction if it doesn't exist
+        const { error } = await supabase.from('all_transactions').insert({
+          akahu_id: _id,
+          date: new Date(date),
+          description,
+          amount,
+          balance,
+          type,
+          account_id: _account,
+          merchant_name: merchant?.name,
+          merchant_nzbn: merchant?.nzbn,
+          merchant_website: merchant?.website,
+          category_name: category?.name,
+          category_group: category?.groups?.personal_finance?.name,
+          card_suffix: meta?.card_suffix,
+          reference: meta?.reference,
+          logo: meta?.logo,
+        })
+
+        if (error) {
+          console.error('Error inserting transaction:', error.message)
+        }
+      } else {
+        console.log(
+          `Transaction with akahu_id: ${_id} already exists. Skipping.`
+        )
       }
     }
   } catch (error) {
@@ -81,7 +100,7 @@ const scheduling = async () => {
   }
 }
 
-// Serve the function (if you're using Sift)
+// Serve the function
 serve({
   '/scheduling': scheduling,
 })

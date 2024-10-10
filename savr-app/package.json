@@ -52,7 +52,8 @@
     "supabase": "^1.200.3",
     "tailwindcss-react-native": "^1.7.10",
     "expo-image-picker": "~15.0.7",
-    "expo-local-authentication": "~14.0.1"
+    "expo-local-authentication": "~14.0.1",
+    "react-native-webview": "13.8.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
