@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { View, FlatList, Text } from 'react-native'
 import { useQuery } from '@tanstack/react-query'
 import Spinner from 'react-native-loading-spinner-overlay'
 import TransactionItem from './TransactionItem'
+import { supabase } from '../utils/SupabaseConfig'
+import { useLocalSearchParams, useRouter } from 'expo-router'
+import { useFocusEffect } from '@react-navigation/native'
 
 const formatTransactionDate = (dateString) => {
   const today = new Date()
@@ -33,7 +36,28 @@ const groupTransactionsByDate = (transactions) => {
     return groups
   }, {})
 }
+
 const TransactionList = ({ itemsToShow, showDateTitle = true }) => {
+  const [transactions, setTransactions] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  const fetchTransactions = async () => {
+    try {
+      const { data, error } = await supabse.from('all_transactions').select('*')
+
+      if (error) {
+        console.error('Error fetching transactions:', error)
+        setLoading(false)
+        return
+      }
+
+      setTransactions(data)
+    } catch (error) {
+      console.error('Unexpected error:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
   // Fetch transactions
   const {
     data: transactionsData,

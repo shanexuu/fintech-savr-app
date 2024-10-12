@@ -1,9 +1,10 @@
 import React, { memo, useState, useEffect, useRef } from 'react'
-import { View, Text, Image, TouchableOpacity } from 'react-native'
+import { View, Text, Image, TouchableOpacity, Modal } from 'react-native'
 import { CategoryBtn } from '../components'
 import { supabase } from '../utils/SupabaseConfig'
 import { useUser, useClerk } from '@clerk/clerk-expo'
 import { useRouter } from 'expo-router'
+import { icons } from '../constants'
 
 const TransactionItem = memo(({ item, accountsData }) => {
   const { user } = useUser()

@@ -8,6 +8,7 @@ import {
   Modal,
   TouchableWithoutFeedback,
   RefreshControl,
+  ScrollView,
 } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { Link, useRouter } from 'expo-router'
@@ -153,7 +154,7 @@ const Home = () => {
                       >
                         <SafeAreaView className="flex-1 justify-end">
                           <TouchableWithoutFeedback onPress={() => {}}>
-                            <View className="bg-white w-full pb-10 h-2/3 rounded-t-3xl">
+                            <View className="bg-white w-full h-auto rounded-t-3xl">
                               <View className="flex flex-row justify-between px-5 py-5 mt-4">
                                 <Text className="font-psemibold text-xl">
                                   Accounts
@@ -168,7 +169,13 @@ const Home = () => {
                                 </TouchableOpacity>
                               </View>
 
-                              <AccountList />
+                              {/* Add ScrollView here */}
+                              <ScrollView
+                                contentContainerStyle={{ flexGrow: 1 }}
+                                showsVerticalScrollIndicator={false}
+                              >
+                                <AccountList />
+                              </ScrollView>
                             </View>
                           </TouchableWithoutFeedback>
                         </SafeAreaView>

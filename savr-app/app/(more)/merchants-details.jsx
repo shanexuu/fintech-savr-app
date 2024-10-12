@@ -16,16 +16,19 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useRouter } from 'expo-router'
 import { MoreHeader, CategoryBtn } from '../../components'
 import Spinner from 'react-native-loading-spinner-overlay'
+import { useUser } from '@clerk/clerk-expo'
 
-const defaultCategories = require('../../assets/data/category-data.json')
-const Categories = defaultCategories.filter(
-  (defaultCat) =>
-    defaultCat.type === 'expense' && defaultCat.name !== 'Uncategorised'
-)
+// const defaultCategories = require('../../assets/data/category-data.json')
+// const Categories = defaultCategories.filter(
+//   (defaultCat) =>
+//     defaultCat.type === 'expense' && defaultCat.name !== 'Uncategorised'
+// )
 
-const MerchantDetails = () => {
+const MerchantDetails = ({ onCategoryChange }) => {
+  const { user } = useUser()
+  const email = user?.emailAddresses[0]?.emailAddress
   const [transactions, setTransactions] = useState([])
-  const [loading, setLoading] = useState(false) // Loading state for updates
+  const [loading, setLoading] = useState(false)
   const {
     merchantName,
     logo,
@@ -38,6 +41,8 @@ const MerchantDetails = () => {
   const [category, setCategory] = useState(null)
   const [modalVisible, setModalVisible] = useState(false) // Modal visibility
 
+  const [selectedCategory, setSelectedCategory] = useState(null)
+  const [defaultCategory, setDefaultCategory] = useState([])
   const handleImagePress = () => {
     router.back()
   }
@@ -61,10 +66,18 @@ const MerchantDetails = () => {
       }
 
       // Set the local state for category immediately after a successful update
-      setCategory(selectedCategory)
+      setSelectedCategory(selectedCategory)
+      setCategory({
+        icon: selectedCategory.icon,
+        color: selectedCategory.color,
+        name: selectedCategory.name,
+      })
 
       // Fetch the updated transactions again
       await fetchMerchantTransactions()
+
+      // Notify parent of the category change
+      onCategoryChange(merchantName, selectedCategory.name)
 
       setModalVisible(false)
     } catch (error) {
@@ -122,8 +135,41 @@ const MerchantDetails = () => {
   }
 
   useEffect(() => {
-    getCategories()
+    if (category_group) {
+      category_group && getCategories() // Fetch category based on updated category_group
+    }
     fetchMerchantTransactions()
+
+    const getAllCategories = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('category')
+          .select('*')
+          .eq('type', 'expense')
+          .in('created_by', ['admin', email])
+          .neq('name', 'Uncategorised')
+
+        if (data.length > 0) {
+          const uniqueCategories = {}
+          data.forEach((category) => {
+            const { name, created_by } = category
+
+            if (!uniqueCategories[name] || created_by === email) {
+              uniqueCategories[name] = category
+            }
+          })
+
+          // Convert the object back into an array
+          const filteredData = Object.values(uniqueCategories)
+
+          setDefaultCategory(filteredData) // Update state with the filtered categories
+        }
+      } catch (error) {
+        console.error('Get categories error!', error)
+      }
+    }
+
+    getAllCategories()
   }, [merchantName, logo, category_group])
 
   // Format date function
@@ -236,7 +282,7 @@ const MerchantDetails = () => {
                     </TouchableOpacity>
                   </View>
                   <View className="flex flex-row flex-wrap items-center mx-2">
-                    {Categories.map((category) => (
+                    {defaultCategory.map((category) => (
                       <CategoryBtn
                         key={category.id}
                         title={category.name}
