@@ -5,18 +5,19 @@ import { CategoryBtn } from '../components'
 import { supabase } from '../utils/SupabaseConfig'
 import { icons } from '../constants'
 import { useRouter } from 'expo-router'
+import { useUser } from '@clerk/clerk-expo'
 
-const defaultCategories = require('../assets/data/category-data.json')
-const Categories = defaultCategories.filter(
-  (defaultCat) =>
-    defaultCat.type === 'expense' && defaultCat.name !== 'Uncategorised'
-)
+const MerchantItem = memo(({ merchant, onCategoryChange }) => {
+  const { user } = useUser()
+  const email = user?.emailAddresses[0]?.emailAddress
 
-const MerchantItem = memo(({ merchant }) => {
   const router = useRouter()
   const { id, name, logo, totalAmount, totalTransactions, category_group } =
     merchant
   const [category, setCategory] = useState(null)
+
+  const [defaultCategory, setDefaultCategory] = useState([])
+
   const [modalVisible, setModalVisible] = useState(false) // Modal visibility
   const maxLength = 15
 
@@ -55,6 +56,7 @@ const MerchantItem = memo(({ merchant }) => {
   // Function to handle category selection
   const handleCategorySelection = (selectedCategory) => {
     updateTransactionCategory(selectedCategory)
+    onCategoryChange(name, selectedCategory.name)
   }
 
   const onMerchantsClick = () => {
@@ -65,9 +67,13 @@ const MerchantItem = memo(({ merchant }) => {
         logo: logo,
         totalAmount: totalAmount,
         totalTransactions: totalTransactions,
-        category_group: category_group,
+        category_group: category?.name || category_group,
+        onCategoryChange: (merchantName, newCategoryName) =>
+          onCategoryChange(merchantName, newCategoryName),
       },
     })
+
+    console.log(category?.name)
   }
 
   useEffect(() => {
@@ -96,7 +102,37 @@ const MerchantItem = memo(({ merchant }) => {
       }
     }
 
+    const getAllCategories = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('category')
+          .select('*')
+          .eq('type', 'expense')
+          .in('created_by', ['admin', email])
+          .neq('name', 'Uncategorised')
+
+        if (data.length > 0) {
+          const uniqueCategories = {}
+          data.forEach((category) => {
+            const { name, created_by } = category
+
+            if (!uniqueCategories[name] || created_by === email) {
+              uniqueCategories[name] = category
+            }
+          })
+
+          // Convert the object back into an array
+          const filteredData = Object.values(uniqueCategories)
+
+          setDefaultCategory(filteredData) // Update state with the filtered categories
+        }
+      } catch (error) {
+        console.error('Get categories error!', error)
+      }
+    }
+
     getCategories()
+    getAllCategories()
   }, [category_group])
 
   return (
@@ -155,7 +191,7 @@ const MerchantItem = memo(({ merchant }) => {
               </TouchableOpacity>
             </View>
             <View className="flex flex-row flex-wrap items-center mx-2">
-              {Categories.map((category) => (
+              {defaultCategory.map((category) => (
                 <CategoryBtn
                   key={category.id}
                   title={category.name}
