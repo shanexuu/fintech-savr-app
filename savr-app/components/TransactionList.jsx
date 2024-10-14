@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { View, FlatList, Text } from 'react-native'
-import { useQuery } from '@tanstack/react-query'
 import Spinner from 'react-native-loading-spinner-overlay'
 import TransactionItem from './TransactionItem'
 import { supabase } from '../utils/SupabaseConfig'
-import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useFocusEffect } from '@react-navigation/native'
+import { useQuery } from '@tanstack/react-query'
 
 const formatTransactionDate = (dateString) => {
   const today = new Date()
@@ -28,7 +27,7 @@ const formatTransactionDate = (dateString) => {
 
 const groupTransactionsByDate = (transactions) => {
   return transactions.reduce((groups, transaction) => {
-    const transactionDate = new Date(transaction.created_at).toDateString()
+    const transactionDate = new Date(transaction.date).toDateString()
     if (!groups[transactionDate]) {
       groups[transactionDate] = []
     }
@@ -40,35 +39,36 @@ const groupTransactionsByDate = (transactions) => {
 const TransactionList = ({ itemsToShow, showDateTitle = true }) => {
   const [transactions, setTransactions] = useState([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   const fetchTransactions = async () => {
     try {
-      const { data, error } = await supabse.from('all_transactions').select('*')
+      const { data, error } = await supabase
+        .from('all_transactions')
+        .select('*') // Fetch all columns from the 'all_transactions' table
+        .order('date', { ascending: false }) // Order by created_at descending
 
       if (error) {
         console.error('Error fetching transactions:', error)
-        setLoading(false)
+        setError('Failed to fetch transactions')
         return
       }
 
       setTransactions(data)
-    } catch (error) {
-      console.error('Unexpected error:', error)
+    } catch (err) {
+      console.error('Unexpected error:', err)
+      setError('An unexpected error occurred')
     } finally {
       setLoading(false)
     }
   }
-  // Fetch transactions
-  const {
-    data: transactionsData,
-    isLoading: isTransactionsLoading,
-    error: transactionsError,
-  } = useQuery({
-    queryKey: ['transactions'],
-    queryFn: () => fetch('/api/transactions').then((res) => res.json()),
-  })
 
-  // Fetch accounts
+  // Fetch transactions when component mounts
+  useFocusEffect(
+    useCallback(() => {
+      fetchTransactions()
+    }, [])
+  )
   const {
     data: accountsData,
     isLoading: isAccountsLoading,
@@ -78,20 +78,20 @@ const TransactionList = ({ itemsToShow, showDateTitle = true }) => {
     queryFn: () => fetch('/api/accounts').then((res) => res.json()),
   })
 
-  if (isTransactionsLoading || isAccountsLoading) {
+  if (loading) {
     return <Spinner visible={true} />
   }
 
-  if (transactionsError || accountsError) {
+  if (error) {
     return (
       <View>
-        <Text>Error loading data</Text>
+        <Text>{error}</Text>
       </View>
     )
   }
 
   const groupedTransactions = groupTransactionsByDate(
-    transactionsData?.items?.slice(0, itemsToShow)
+    transactions?.slice(0, itemsToShow)
   )
 
   return (
@@ -108,7 +108,7 @@ const TransactionList = ({ itemsToShow, showDateTitle = true }) => {
           {/* Map through transactions of the same date */}
           {groupedTransactions[dateKey].map((transaction) => (
             <TransactionItem
-              key={transaction._id}
+              key={transaction.id}
               item={transaction}
               accountsData={accountsData}
             />

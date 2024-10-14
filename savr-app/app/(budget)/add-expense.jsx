@@ -66,26 +66,27 @@ const AddExpense = () => {
     const { data, error } = await supabase
       .from('category')
       .select('*')
-      .eq('type', 'expense')
+      .eq('type', 'Expense')
+      .in('created_by', ['admin', email])
+      .neq('name', 'Uncategorised')
 
     if (error) {
       console.error('Error fetching categories:', error)
-      setCategories(defaultCategories)
-      return
     }
 
     if (data && data.length > 0) {
-      const expenseDefaultCategories = defaultCategories.filter(
-        (defaultCat) => defaultCat.type === 'expense'
-      )
+      const uniqueCategories = {}
+      data.forEach((category) => {
+        const { name, created_by } = category
 
-      const mergedCategories = expenseDefaultCategories.map((defaultCat) => {
-        const userCategory = data.find(
-          (supabaseCat) => supabaseCat.category_id === defaultCat.category_id
-        )
-        return userCategory || defaultCat
+        if (!uniqueCategories[name] || created_by === email) {
+          uniqueCategories[name] = category
+        }
       })
-      setCategories(mergedCategories)
+
+      // Convert the object back into an array
+      const filteredData = Object.values(uniqueCategories)
+      setCategories(filteredData)
     } else {
       setCategories(defaultCategories)
     }

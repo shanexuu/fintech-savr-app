@@ -5,27 +5,33 @@ import { useUser } from '@clerk/clerk-expo'
 import { icons } from '../constants'
 import { calculateTotalActualIncome } from '../utils/CalculateIncome'
 import { calculateTotalExpectedIncome } from '../utils/TotalIncome'
+import { useFocusEffect } from '@react-navigation/native'
 
-const IncomeItem = ({ income, category }) => {
+const IncomeItem = ({ income, category, onIncomeDataFetched }) => {
   const { user } = useUser()
   const email = user?.emailAddresses[0]?.emailAddress
   const router = useRouter()
   const { icon, color, name, amount } = income
   const [monthlyIncome, setMonthlyIncome] = useState(null)
   const [totalIncome, setTotalIncome] = useState(null)
+  const [budgetedMonthlyIncome, setBudgetedMonthlyIncome] = useState(null)
 
   // Fetch monthly income and total income on component mount
   useEffect(() => {
     const fetchIncomeData = async (email) => {
       if (email) {
-        const actualIncome = await calculateTotalActualIncome(email)
+        const actualIncome = await calculateTotalActualIncome(income.name)
         const expectedIncome = await calculateTotalExpectedIncome(email)
 
-        const totalIncome = actualIncome.incomeByCategory[category.id] || 0
+        const totalIncome = actualIncome.incomeByCategory[income.name] || 0
         const monthlyIncome = expectedIncome.incomeByCategory[category.id] || 0
 
         setTotalIncome(totalIncome)
         setMonthlyIncome(monthlyIncome)
+        // Pass the fetched data to the parent component
+        if (onIncomeDataFetched) {
+          onIncomeDataFetched(income.id, totalIncome, monthlyIncome)
+        }
       }
     }
 

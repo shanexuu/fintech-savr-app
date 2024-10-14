@@ -22,7 +22,7 @@ import { supabase } from '../../utils/SupabaseConfig'
 import { useUser, useClerk } from '@clerk/clerk-expo'
 import { useRouter } from 'expo-router'
 
-const defaultCategories = require('../../assets/data/category-data.json')
+// const defaultCategories = require('../../assets/data/category-data.json')
 
 const AddIncome = () => {
   const { user } = useUser()
@@ -67,28 +67,27 @@ const AddIncome = () => {
     const { data, error } = await supabase
       .from('category')
       .select('*')
-      .eq('type', 'income')
+      .eq('type', 'Income')
+      .in('created_by', ['admin', email])
+      .neq('name', 'Uncategorised')
 
     if (error) {
       console.error('Error fetching categories:', error)
-      setCategories(defaultCategories) // Fallback to default categories
-      return
     }
 
     if (data && data.length > 0) {
-      const incomeDefaultCategories = defaultCategories.filter(
-        (defaultCat) => defaultCat.type === 'income'
-      )
+      const uniqueCategories = {}
+      data.forEach((category) => {
+        const { name, created_by } = category
 
-      // Merge Supabase data with default categories (local JSON)
-      const mergedCategories = incomeDefaultCategories.map((defaultCat) => {
-        const userCategory = data.find(
-          (supabaseCat) => supabaseCat.category_id === defaultCat.category_id
-        )
-        return userCategory || defaultCat // Use userCategory if found, otherwise defaultCat
+        if (!uniqueCategories[name] || created_by === email) {
+          uniqueCategories[name] = category
+        }
       })
 
-      setCategories(mergedCategories)
+      // Convert the object back into an array
+      const filteredData = Object.values(uniqueCategories)
+      setCategories(filteredData)
     } else {
       // No categories in Supabase, fallback to default categories
       setCategories(defaultCategories)

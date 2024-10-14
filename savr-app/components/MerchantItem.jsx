@@ -67,6 +67,7 @@ const MerchantItem = memo(({ merchant, onCategoryChange }) => {
         logo: logo,
         totalAmount: totalAmount,
         totalTransactions: totalTransactions,
+
         category_group: category?.name || category_group,
         onCategoryChange: (merchantName, newCategoryName) =>
           onCategoryChange(merchantName, newCategoryName),
