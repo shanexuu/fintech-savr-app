@@ -141,6 +141,24 @@ const InitialLayout = () => {
           headerBackTitle: 'More',
         }}
       />
+
+      <Stack.Screen
+        name="(more)/transaction-details"
+        options={{
+          headerShown: false,
+          headerTitle: 'Transaction Details',
+          headerBackTitle: 'transaction',
+        }}
+      />
+
+      <Stack.Screen
+        name="(more)/add-new-category"
+        options={{
+          headerShown: false,
+          headerTitle: 'Add new category',
+          headerBackTitle: 'transaction',
+        }}
+      />
     </Stack>
   )
 }

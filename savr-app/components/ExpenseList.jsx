@@ -2,7 +2,7 @@ import { View, FlatList, Text } from 'react-native'
 import React from 'react'
 import ExpenseItem from './ExpenseItem'
 
-const ExpenseList = ({ expenseList }) => {
+const ExpenseList = ({ expenseList, onExpenseDataFetched }) => {
   return (
     <FlatList
       data={expenseList}
@@ -11,6 +11,7 @@ const ExpenseList = ({ expenseList }) => {
         <ExpenseItem
           expense={item.expense}
           category={item.category}
+          onExpenseDataFetched={onExpenseDataFetched}
         />
       )}
     />

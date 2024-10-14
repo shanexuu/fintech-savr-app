@@ -30,8 +30,7 @@ const IncomeDetail = () => {
 
   useEffect(() => {
     incomeId && getIncomeDetail()
-    console.log(incomeId)
-  }, [incomeId])
+  }, [incomeId, selectedColor])
 
   const getIncomeDetail = async () => {
     if (!incomeId) return
@@ -68,7 +67,7 @@ const IncomeDetail = () => {
     const { data, error } = await supabase
       .from('category')
       .select('*')
-      .eq('type', 'income')
+      .eq('type', 'Income')
 
     if (data) {
       setCategories(data)
@@ -99,6 +98,7 @@ const IncomeDetail = () => {
   }
 
   const handleColor = (newColor) => {
+    console.log('Selected Color:', newColor) // Debugging
     setSelectedColor(newColor)
     updateCategoryDetails(newColor, selectedIcon)
   }
@@ -121,7 +121,7 @@ const IncomeDetail = () => {
     const { data, error } = await supabase
       .from('income')
       .update({
-        name: categoryTitle,
+        name: category,
         icon: selectedIcon,
         amount: amount,
         period: selectedOption,
@@ -151,6 +151,9 @@ const IncomeDetail = () => {
     } else {
       console.log('Category updated:', data)
     }
+
+    fetchCategories()
+    getIncomeDetail()
   }
 
   // Function to delete the income entry
@@ -244,7 +247,6 @@ const IncomeDetail = () => {
                             iconStyles={category.color}
                             containerStyles="m-1"
                             handlePress={() => {
-                              // Set selected category logic here if needed
                               setCategory(category.name) // Set category name
                               setIcon(category.icon) // Set icon
                               setColor(category.color) // Set color

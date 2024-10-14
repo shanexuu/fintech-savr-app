@@ -2,7 +2,7 @@ import { View, FlatList, Text } from 'react-native'
 import React from 'react'
 import IncomeItem from './IncomeItem'
 
-const IncomeList = ({ incomeList }) => {
+const IncomeList = ({ incomeList, onIncomeDataFetched }) => {
   return (
     <FlatList
       data={incomeList}
@@ -11,6 +11,7 @@ const IncomeList = ({ incomeList }) => {
         <IncomeItem
           income={item.income}
           category={item.category}
+          onIncomeDataFetched={onIncomeDataFetched}
         />
       )}
     />

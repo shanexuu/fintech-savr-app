@@ -2,7 +2,7 @@ import { supabase } from './SupabaseConfig'
 import dayjs from 'dayjs' // Import dayjs for date manipulation
 
 // Function to calculate total actual expenses by category group for the current month
-export const calculateTotalMonthlyExpense = async (selectedCategoryGroup) => {
+export const calculateTotalActualExpense = async (selectedCategoryGroup) => {
   try {
     // Get the start and end of the current month using dayjs
     const startOfMonth = dayjs().startOf('month').format('YYYY-MM-DD') // Start of the month
@@ -10,10 +10,9 @@ export const calculateTotalMonthlyExpense = async (selectedCategoryGroup) => {
 
     // Fetch the transaction data for the user, filtered by the current month's transactions
     const { data: transactionData, error: transactionError } = await supabase
-      .from('all_transaction') // All transactions table
-      .select('amount, category_group, date') // Fetch amount, category_group, and created_at fields
-
-      .eq('category_group', selectedCategoryGroup) // Filter by user's selected category group
+      .from('all_transactions') // All transactions table
+      .select('amount, id, category_group, date') // Fetch amount, category_group, and created_at fields
+      .ilike('category_group', selectedCategoryGroup) // Filter by user's selected category group
       .gte('date', startOfMonth) // Filter by transactions from the start of the current month
       .lte('date', endOfMonth) // Filter by transactions until the end of the current month
 
@@ -33,6 +32,7 @@ export const calculateTotalMonthlyExpense = async (selectedCategoryGroup) => {
 
     // Loop through each transaction and calculate total expense per category group
     transactionData.forEach((transaction) => {
+      const categoryId = transaction.category_group
       const amount = parseFloat(transaction.amount)
 
       // Initialize the category group in the object if it doesn't exist

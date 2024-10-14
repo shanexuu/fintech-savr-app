@@ -32,6 +32,10 @@ const Budget = () => {
   const [expenseList, setExpenseList] = useState([])
   const [loading, setLoading] = useState(false)
 
+  const [incomeData, setIncomeData] = useState([])
+  const [expenseData, setExpenseData] = useState([])
+  const totalIncome = 5000 // Example total income
+  const totalExpenses = 3000
   const avatarPress = () => {
     navigation.navigate('(more)/settings')
   }
@@ -39,6 +43,12 @@ const Budget = () => {
   useEffect(() => {
     getBudgetData()
   }, [])
+
+  useFocusEffect(
+    useCallback(() => {
+      getBudgetData() // Fetch the latest data when the screen is focused
+    }, [])
+  )
 
   const getBudgetData = async () => {
     setLoading(true)
@@ -111,12 +121,60 @@ const Budget = () => {
       getBudgetData()
     }, [])
   )
+  const handleIncomeDataFetched = (incomeId, totalIncome, monthlyIncome) => {
+    // Store or update the income data as needed
+    setIncomeData((prevData) => [
+      ...prevData.filter((data) => data.incomeId !== incomeId),
+      { incomeId, totalIncome, monthlyIncome },
+    ])
+  }
+
+  const handleExpenseDataFetched = (
+    expenseId,
+    totalExpense,
+    monthlyExpense
+  ) => {
+    setExpenseData((prevData) => [
+      ...prevData.filter((data) => data.expenseId !== expenseId),
+      { expenseId, totalExpense, monthlyExpense },
+    ])
+  }
+  // Aggregate income and expenses
+  const totalMonthlyIncome = incomeData.reduce(
+    (total, income) => total + (income.monthlyIncome || 0),
+    0
+  )
+
+  const totalEarnedIncome = incomeData.reduce(
+    (total, income) => total + (income.totalIncome || 0),
+    0
+  )
+
+  const totalMonthlyExpenses = expenseData.reduce(
+    (total, expense) => total + (expense.monthlyExpense || 0),
+    0
+  )
+
+  const totalSpentExpenses = expenseData.reduce(
+    (total, expense) => total + (expense.totalExpense || 0),
+    0
+  )
+
+  const remainingBudget = Math.max(totalMonthlyIncome - totalMonthlyExpenses, 0)
 
   return (
     <SafeAreaView
       edges={['top', 'left', 'right']}
       className="bg-white h-full flex"
     >
+      <View className="px-4">
+        <Header
+          headertext="Budget"
+          icon={icons.Info}
+          containerStyle="mb-8"
+          avatarPress={avatarPress}
+        />
+      </View>
       <ScrollView
         refreshControl={
           <RefreshControl
@@ -126,17 +184,27 @@ const Budget = () => {
         }
       >
         <View className="h-full bg-white ">
-          <View className="px-4">
-            <Header
-              headertext="Budget"
-              icon={icons.Info}
-              containerStyle="mb-8"
-              avatarPress={avatarPress}
+          <View className="flex items-center mb-10 shadow-md px-4 rounded-3xl">
+            <CircularChart
+              totalIncome={totalIncome}
+              totalExpenses={totalExpenses}
             />
           </View>
+          <View className="p-4">
+            <Text className="font-bold text-xl">Budget Summary</Text>
 
-          <View className="flex items-center mb-10 shadow-md px-4 rounded-3xl">
-            <CircularChart />
+            {/* Display income summary */}
+            <Text>Total Monthly Income: ${totalMonthlyIncome.toFixed(2)}</Text>
+            <Text>Total Earned Income: ${totalEarnedIncome.toFixed(2)}</Text>
+
+            {/* Display expense summary */}
+            <Text>
+              Total Monthly Expenses: ${totalMonthlyExpenses.toFixed(2)}
+            </Text>
+            <Text>Total Spent Expenses: ${totalSpentExpenses.toFixed(2)}</Text>
+
+            {/* Display remaining budget */}
+            <Text>Remaining Budget: ${remainingBudget.toFixed(2)}</Text>
           </View>
 
           <View>
@@ -150,7 +218,10 @@ const Budget = () => {
               </TouchableOpacity>
             </View>
 
-            <IncomeList incomeList={incomeList} />
+            <IncomeList
+              incomeList={incomeList}
+              onIncomeDataFetched={handleIncomeDataFetched}
+            />
           </View>
 
           <View>
@@ -164,7 +235,10 @@ const Budget = () => {
               </TouchableOpacity>
             </View>
 
-            <ExpenseList expenseList={expenseList} />
+            <ExpenseList
+              expenseList={expenseList}
+              onExpenseDataFetched={handleExpenseDataFetched}
+            />
           </View>
         </View>
       </ScrollView>

@@ -2,7 +2,7 @@ import { supabase } from './SupabaseConfig'
 import dayjs from 'dayjs' // Import dayjs for date manipulation
 
 // Function to calculate total actual income by category for the current month
-export const calculateTotalActualIncome = async (email) => {
+export const calculateTotalActualIncome = async (income) => {
   try {
     // Get the start and end of the current month using dayjs
     const startOfMonth = dayjs().startOf('month').format('YYYY-MM-DD') // Start of the month
@@ -10,12 +10,11 @@ export const calculateTotalActualIncome = async (email) => {
 
     // Fetch the transaction data for the user, filtered by the current month's transactions
     const { data: transactionData, error: transactionError } = await supabase
-      .from('transaction') // Transaction table
-      .select('amount, category_id, created_at') // Fetch amount, category_id, and created_at fields
-      .eq('user', email) // Filter by user's email
-      .gte('created_at', startOfMonth) // Filter by transactions from the start of the current month
-      .lte('created_at', endOfMonth) // Filter by transactions until the end of the current month
-
+      .from('all_transactions') // Transaction table
+      .select('amount, id, date, category_group') // Fetch amount, category_id, and created_at fields
+      .gte('date', startOfMonth) // Filter by transactions from the start of the current month
+      .lte('date', endOfMonth) // Filter by transactions until the end of the current month
+      .ilike('category_group', income)
     // Handle any error while fetching data
     if (transactionError) {
       console.error('Error fetching transaction data:', transactionError)
@@ -32,7 +31,7 @@ export const calculateTotalActualIncome = async (email) => {
 
     // Loop through each transaction and calculate total income per category
     transactionData.forEach((transaction) => {
-      const categoryId = transaction.category_id
+      const categoryId = transaction.category_group
       const amount = parseFloat(transaction.amount)
 
       // Initialize the category in the object if it doesn't exist
