@@ -15,7 +15,6 @@ const MerchantItem = memo(({ merchant, onCategoryChange }) => {
   const { id, name, logo, totalAmount, totalTransactions, category_group } =
     merchant
   const [category, setCategory] = useState(null)
-
   const [defaultCategory, setDefaultCategory] = useState([])
 
   const [modalVisible, setModalVisible] = useState(false) // Modal visibility
@@ -108,7 +107,7 @@ const MerchantItem = memo(({ merchant, onCategoryChange }) => {
         const { data, error } = await supabase
           .from('category')
           .select('*')
-          .eq('type', 'expense')
+          .eq('type', 'Expense')
           .in('created_by', ['admin', email])
           .neq('name', 'Uncategorised')
 

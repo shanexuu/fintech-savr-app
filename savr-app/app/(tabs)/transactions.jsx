@@ -17,10 +17,10 @@ const Transactions = () => {
           headertext="Transactions"
           icon={icons.Info}
           containerStyle="mb-4 px-4"
-          modalTitle="Your Budget 💸"
+          modalTitle="Transaction 💰"
           modalContent={
-            'Setting a budget not only allows you to keep track of your hand-earned pennies but also brings to life a lot of features we have to offer.\n\n' +
-            'Here, you can set up budgets for your income and expenses and track spending against them.'
+            'Your transactions are all shown here, including the categoty for each one.\n\n' +
+            "If you'd like to allowcate a transaction to a differeent, tap the categoty button."
           }
         />
 

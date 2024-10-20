@@ -16,7 +16,7 @@ import { icons } from '../../constants'
 import { supabase } from '../../utils/SupabaseConfig'
 import { useUser } from '@clerk/clerk-expo'
 import { useRouter } from 'expo-router'
-import { CategoryBtn, Header } from '../../components'
+import { CategoryBtn, MoreHeader } from '../../components'
 
 const IncomeDetail = () => {
   const { user } = useUser()
@@ -179,7 +179,7 @@ const IncomeDetail = () => {
       <View className="flex-1 justify-between px-4">
         <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
           <View className="w-full flex justify-center">
-            <Header
+            <MoreHeader
               headertext="Income budget"
               icon={icons.Close}
               containerStyle="mb-8"
