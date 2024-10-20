@@ -16,7 +16,12 @@ const Transactions = () => {
         <Header
           headertext="Transactions"
           icon={icons.Info}
-          containerStyle="mb-8 px-4"
+          containerStyle="mb-4 px-4"
+          modalTitle="Your Budget 💸"
+          modalContent={
+            'Setting a budget not only allows you to keep track of your hand-earned pennies but also brings to life a lot of features we have to offer.\n\n' +
+            'Here, you can set up budgets for your income and expenses and track spending against them.'
+          }
         />
 
         <View className="flex flex-row justify-between items-center">

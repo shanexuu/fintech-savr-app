@@ -60,7 +60,7 @@ const ExpenseDetail = () => {
     const { data, error } = await supabase
       .from('category')
       .select('*')
-      .eq('type', 'expense')
+      .eq('type', 'Expense')
 
     if (data) {
       setCategories(data)
@@ -318,7 +318,7 @@ const ExpenseDetail = () => {
         </View>
 
         <Modal
-          animationType="slide"
+          animationType="fade"
           transparent={true}
           visible={confirmDeleteVisible}
           onRequestClose={() => setConfirmDeleteVisible(false)}
@@ -327,7 +327,7 @@ const ExpenseDetail = () => {
             <View className="bg-white w-4/5 p-6 rounded-lg">
               <Text className="text-lg font-bold mb-4">Confirm Delete</Text>
               <Text className="text-gray-500 mb-6">
-                Are you sure you want to delete this income budget?
+                Are you sure you want to delete this expense budget?
               </Text>
               <View className="flex flex-row justify-between">
                 <CustomButton

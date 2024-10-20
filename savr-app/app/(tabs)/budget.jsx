@@ -14,6 +14,7 @@ import {
   IncomeList,
   Header,
   ExpenseList,
+  BreakdownItem,
 } from '../../components'
 import { supabase } from '../../utils/SupabaseConfig'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -34,6 +35,10 @@ const Budget = () => {
 
   const [incomeData, setIncomeData] = useState([])
   const [expenseData, setExpenseData] = useState([])
+
+  // State to toggle between budgeted and actual data
+  const [showBudgeted, setShowBudgeted] = useState(true)
+
   const totalIncome = 5000 // Example total income
   const totalExpenses = 3000
   const avatarPress = () => {
@@ -116,13 +121,7 @@ const Budget = () => {
     })
   }
 
-  useFocusEffect(
-    useCallback(() => {
-      getBudgetData()
-    }, [])
-  )
   const handleIncomeDataFetched = (incomeId, totalIncome, monthlyIncome) => {
-    // Store or update the income data as needed
     setIncomeData((prevData) => [
       ...prevData.filter((data) => data.incomeId !== incomeId),
       { incomeId, totalIncome, monthlyIncome },
@@ -139,6 +138,7 @@ const Budget = () => {
       { expenseId, totalExpense, monthlyExpense },
     ])
   }
+
   // Aggregate income and expenses
   const totalMonthlyIncome = incomeData.reduce(
     (total, income) => total + (income.monthlyIncome || 0),
@@ -161,6 +161,15 @@ const Budget = () => {
   )
 
   const remainingBudget = Math.max(totalMonthlyIncome - totalMonthlyExpenses, 0)
+  const actualRemainingBudget = Math.max(
+    totalEarnedIncome - totalSpentExpenses,
+    0
+  )
+
+  // Toggle between budgeted and actual data
+  const toggleBudgetView = () => {
+    setShowBudgeted((prevState) => !prevState)
+  }
 
   return (
     <SafeAreaView
@@ -171,8 +180,13 @@ const Budget = () => {
         <Header
           headertext="Budget"
           icon={icons.Info}
-          containerStyle="mb-8"
+          containerStyle="mb-4"
           avatarPress={avatarPress}
+          modalTitle="Your Budget 💸"
+          modalContent={
+            'Setting a budget not only allows you to keep track of your hand-earned pennies but also brings to life a lot of features we have to offer.\n\n' +
+            'Here, you can set up budgets for your income and expenses and track spending against them.'
+          }
         />
       </View>
       <ScrollView
@@ -183,28 +197,62 @@ const Budget = () => {
           />
         }
       >
-        <View className="h-full bg-white ">
-          <View className="flex items-center mb-10 shadow-md px-4 rounded-3xl">
-            <CircularChart
+        <View className="h-full bg-white">
+          <View className="flex items-center shadow-md px-4 rounded-3xl">
+            {/* <CircularChart
               totalIncome={totalIncome}
               totalExpenses={totalExpenses}
-            />
+            /> */}
           </View>
-          <View className="p-4">
-            <Text className="font-bold text-xl">Budget Summary</Text>
+          <View>
+            <View className="flex flex-row justify-between items-center my-6 px-4">
+              <Text className="font-psemibold text-xl text-primary">
+                Budget Breakdown
+              </Text>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={toggleBudgetView}
+              >
+                <View className="bg-black px-4 py-2 rounded-3xl">
+                  <Text className="font-pregular text-white text-sm">
+                    {showBudgeted ? 'Budgeted' : 'Actual'}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
 
-            {/* Display income summary */}
-            <Text>Total Monthly Income: ${totalMonthlyIncome.toFixed(2)}</Text>
-            <Text>Total Earned Income: ${totalEarnedIncome.toFixed(2)}</Text>
-
-            {/* Display expense summary */}
-            <Text>
-              Total Monthly Expenses: ${totalMonthlyExpenses.toFixed(2)}
-            </Text>
-            <Text>Total Spent Expenses: ${totalSpentExpenses.toFixed(2)}</Text>
-
-            {/* Display remaining budget */}
-            <Text>Remaining Budget: ${remainingBudget.toFixed(2)}</Text>
+            <View
+              className="flex flex-row justify-between px-4 mb-5"
+              style={{ gap: 10 }}
+            >
+              <BreakdownItem
+                title="Income"
+                color="green"
+                amount={
+                  showBudgeted
+                    ? totalMonthlyIncome.toFixed(2)
+                    : totalEarnedIncome.toFixed(2)
+                }
+              />
+              <BreakdownItem
+                title="Expense"
+                color="pink"
+                amount={
+                  showBudgeted
+                    ? totalMonthlyExpenses.toFixed(2)
+                    : totalSpentExpenses.toFixed(2)
+                }
+              />
+              <BreakdownItem
+                title="Left Over"
+                color="purple"
+                amount={
+                  showBudgeted
+                    ? remainingBudget.toFixed(2)
+                    : actualRemainingBudget.toFixed(2)
+                }
+              />
+            </View>
           </View>
 
           <View>

@@ -41,7 +41,6 @@ const More = () => {
         <View className="px-4">
           <Header
             headertext="More"
-            icon={icons.Info}
             containerStyle="mb-4"
           />
           <DefaultButton
@@ -72,6 +71,17 @@ const More = () => {
             icon="Settings"
             iconBg="purple-100"
           />
+          <Text className="text-center mt-10 mb-4 font-pregular text-gray-400">
+            v.1.0.0
+          </Text>
+          <View className="flex flex-row justify-center gap-8">
+            <Text className="font-pmedium text-gray-400 text-base">
+              Terms of Use
+            </Text>
+            <Text className="font-pmedium text-gray-400 text-base">
+              Privacy Policy
+            </Text>
+          </View>
         </View>
       </View>
     </SafeAreaView>

@@ -8,6 +8,7 @@ const ColorPicker = ({ selectedColor, setSelectedColor }) => {
       {Colors.color_list.map((color, index) => (
         <TouchableOpacity
           key={index}
+          testID={`color-option-${index}`}
           className="h-10 w-10 rounded-full"
           style={[
             { backgroundColor: color },
