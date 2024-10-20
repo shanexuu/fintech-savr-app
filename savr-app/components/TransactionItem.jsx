@@ -228,7 +228,7 @@ const TransactionItem = memo(({ item, accountsData, onCategoryChange }) => {
                 />
               </TouchableOpacity>
             </View>
-            <View className="flex flex-row flex-wrap items-center mx-2">
+            <View className="flex flex-row flex-wrap items-center mx-2 w-full">
               {defaultCategory.map((category) => (
                 <CategoryBtn
                   key={category.id}

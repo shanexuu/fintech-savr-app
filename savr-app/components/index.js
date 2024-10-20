@@ -8,8 +8,6 @@ import AccountsData from './AccountsData'
 import IncomeData from './IncomeData'
 import ExpenseData from './ExpenseData'
 import AddBtn from './navigation/AddBtn'
-import DonutChart from './DonutChart'
-import DonutPath from './DonutPath'
 import RenderItem from './RenderItem'
 import CircularChart from './CircularChart'
 import ColorPicker from './ColorPicker'
@@ -25,6 +23,7 @@ import DefaultButton from './DefaultButton'
 import MoreHeader from './MoreHeader'
 import MerchantItem from './MerchantItem'
 import MerchantList from './MerchantList'
+import BreakdownItem from './BreakdownItem'
 
 export {
   Onboarding,
@@ -37,8 +36,6 @@ export {
   IncomeData,
   ExpenseData,
   AddBtn,
-  DonutChart,
-  DonutPath,
   RenderItem,
   CircularChart,
   ColorPicker,
@@ -54,4 +51,5 @@ export {
   MoreHeader,
   MerchantItem,
   MerchantList,
+  BreakdownItem,
 }
