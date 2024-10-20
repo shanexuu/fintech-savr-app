@@ -1,6 +1,6 @@
 import { View, SafeAreaView, ScrollView, RefreshControl } from 'react-native'
 import React, { useEffect, useState, useCallback } from 'react'
-import { MoreHeader, MerchantList } from '../../components'
+import { Header, MerchantList } from '../../components'
 import { icons } from '../../constants'
 import { useRouter } from 'expo-router'
 import { supabase } from '../../utils/SupabaseConfig'
@@ -51,11 +51,15 @@ const Merchants = () => {
       className="bg-white h-full flex"
     >
       <View className="px-4">
-        <MoreHeader
+        <Header
           headertext="Merchants"
           icon={icons.Info}
-          containerStyle="mb-4"
-          handleImagePress={handleImagePress}
+          containerStyle="mb-4 px-4"
+          modalTitle="Merchants 🧾"
+          modalContent={
+            'Your merchants are every place where you spend your money. Instead of having to categories multiple transactions for the same merchant, they are all grouped here.\n\n' +
+            "New merchants are added automatically, you'll need to categorise them into an enpense if th'are uncategorised."
+          }
         />
       </View>
       <ScrollView

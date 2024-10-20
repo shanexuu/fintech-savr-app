@@ -14,7 +14,7 @@ import { Colors } from '../../constants/Colors'
 import {
   ColorPicker,
   CustomButton,
-  Header,
+  MoreHeader,
   CategoryBtn,
 } from '../../components'
 import { icons } from '../../constants'
@@ -122,7 +122,7 @@ const AddExpense = () => {
       <View className="flex-1 justify-between px-4">
         <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
           <View className="w-full flex justify-center">
-            <Header
+            <MoreHeader
               headertext="Add expense budget"
               icon={icons.Close}
               containerStyle="mb-8"
