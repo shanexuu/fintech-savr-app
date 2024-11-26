@@ -36,17 +36,20 @@ const groupTransactionsByDate = (transactions) => {
   }, {})
 }
 
-const TransactionList = ({ itemsToShow, showDateTitle = true }) => {
+const TransactionList = ({ initialItemsToShow = 10, showDateTitle = true }) => {
   const [transactions, setTransactions] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [itemsToShow, setItemsToShow] = useState(initialItemsToShow) // Items to show initially and incrementally
 
-  const fetchTransactions = async () => {
+  const fetchTransactions = async (limit = itemsToShow) => {
     try {
+      setLoading(true)
       const { data, error } = await supabase
         .from('all_transactions')
-        .select('*') // Fetch all columns from the 'all_transactions' table
-        .order('date', { ascending: false }) // Order by created_at descending
+        .select('*')
+        .order('date', { ascending: false })
+        .limit(limit)
 
       if (error) {
         console.error('Error fetching transactions:', error)
@@ -63,12 +66,17 @@ const TransactionList = ({ itemsToShow, showDateTitle = true }) => {
     }
   }
 
-  // Fetch transactions when component mounts
+  // Initial fetch and refetch on focus
   useFocusEffect(
     useCallback(() => {
       fetchTransactions()
-    }, [])
+    }, [itemsToShow]) // Refetch if itemsToShow changes
   )
+
+  const loadMoreTransactions = () => {
+    setItemsToShow((prevItems) => prevItems + initialItemsToShow)
+  }
+
   const {
     data: accountsData,
     isLoading: isAccountsLoading,
@@ -116,6 +124,8 @@ const TransactionList = ({ itemsToShow, showDateTitle = true }) => {
         </View>
       )}
       keyExtractor={(item) => item}
+      onEndReached={loadMoreTransactions} // Load more when end is reached
+      onEndReachedThreshold={0.5} // Fetch more when halfway through the list
       windowSize={5}
     />
   )

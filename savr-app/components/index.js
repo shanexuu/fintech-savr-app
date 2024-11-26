@@ -24,6 +24,7 @@ import MoreHeader from './MoreHeader'
 import MerchantItem from './MerchantItem'
 import MerchantList from './MerchantList'
 import BreakdownItem from './BreakdownItem'
+import TotalIncome from './TotalIncome'
 
 export {
   Onboarding,
@@ -52,4 +53,5 @@ export {
   MerchantItem,
   MerchantList,
   BreakdownItem,
+  TotalIncome,
 }

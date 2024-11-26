@@ -9,7 +9,7 @@ import { icons } from '../constants'
 import { Colors } from '../constants/Colors'
 import { useFocusEffect } from '@react-navigation/native'
 
-const TransactionItem = memo(({ item, accountsData, onCategoryChange }) => {
+const TransactionItem = memo(({ item, accountsData }) => {
   const { user } = useUser()
   const email = user?.emailAddresses[0]?.emailAddress
   const router = useRouter()
@@ -19,6 +19,7 @@ const TransactionItem = memo(({ item, accountsData, onCategoryChange }) => {
 
   const maxLength = 15
   const [modalVisible, setModalVisible] = useState(false)
+
   // Function to truncate text if it exceeds the maximum length
   const truncateText = (text, length) => {
     if (text.length > length) {
@@ -69,6 +70,7 @@ const TransactionItem = memo(({ item, accountsData, onCategoryChange }) => {
       console.error('Unexpected error:', error)
     }
   }
+
   const getCategories = async () => {
     try {
       const { data: categoryData, error: categoryError } = await supabase
@@ -129,24 +131,46 @@ const TransactionItem = memo(({ item, accountsData, onCategoryChange }) => {
       console.error('Get categories error!', error)
     }
   }
+
   const handleCategorySelection = (selectedCategory) => {
     updateTransactionCategory(selectedCategory)
   }
+
   const handleAddCategory = () => {
     setModalVisible(false)
     router.push('/(more)/add-new-category')
   }
+
   useEffect(() => {
     getCategories()
     getAllCategories()
   }, [categoryName, item.id])
 
-  useFocusEffect(
-    React.useCallback(() => {
-      // Re-fetch categories when the screen is focused
-      getAllCategories()
-    }, [])
-  )
+  // Add another useEffect to set the initial category details
+  useEffect(() => {
+    const fetchCategoryDetails = async () => {
+      const { data: categoryData, error: categoryError } = await supabase
+        .from('category')
+        .select('*')
+        .ilike('name', `%${item.category_group || categoryName}%`) // Use the current category_group or categoryName
+
+      if (categoryError) {
+        console.error('Error fetching category details:', categoryError)
+        return
+      }
+
+      if (categoryData.length > 0) {
+        const matchedCategory = categoryData[0]
+        setCategoryDetails({
+          icon: matchedCategory.icon,
+          color: matchedCategory.color,
+          name: matchedCategory.name,
+        })
+      }
+    }
+
+    fetchCategoryDetails()
+  }, [item.category_group, categoryName, item.id]) // Add item.category_group as a dependency
 
   const onTransactionClick = () => {
     router.push({

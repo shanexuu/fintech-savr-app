@@ -32,6 +32,10 @@ const IncomeDetail = () => {
     incomeId && getIncomeDetail()
   }, [incomeId, selectedColor])
 
+  const handleImagePress = () => {
+    router.back()
+  }
+
   const getIncomeDetail = async () => {
     if (!incomeId) return
 
@@ -183,7 +187,7 @@ const IncomeDetail = () => {
               headertext="Income budget"
               icon={icons.Close}
               containerStyle="mb-8"
-              handlePress={() => router.back()}
+              handleImagePress={handleImagePress}
             />
 
             <View className="items-center justify-center">

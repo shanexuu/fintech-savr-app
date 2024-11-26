@@ -27,7 +27,9 @@ const ExpenseDetail = () => {
   const { expenseId, categoryId } = useLocalSearchParams()
 
   const [expenseData, setExpenseData] = useState(null)
-
+  const handleImagePress = () => {
+    router.back()
+  }
   useEffect(() => {
     expenseId && getExpenseDetail()
   }, [expenseId])
@@ -175,7 +177,7 @@ const ExpenseDetail = () => {
               headertext="Expense Budget"
               icon={icons.Close}
               containerStyle="mb-8"
-              handlePress={() => router.back()}
+              handleImagePress={handleImagePress}
             />
 
             <View className="items-center justify-center">

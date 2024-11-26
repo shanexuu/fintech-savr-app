@@ -10,7 +10,7 @@ import {
   RefreshControl,
   ScrollView,
 } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Link, useRouter } from 'expo-router'
 import { useUser, useClerk } from '@clerk/clerk-expo'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -23,6 +23,7 @@ import {
   RoundBtn,
   AccountList,
   CurrentMonthExpense,
+  TotalIncome,
 } from '../../components'
 import { useNavigation } from '@react-navigation/native'
 import { calculateMonthlyIncome } from '../../utils/CalculateMonthlyIncome'
@@ -71,13 +72,11 @@ const Home = () => {
 
   // Fetch monthly income on component mount and when the email changes
   useEffect(() => {
-    const fetchIncome = async (email) => {
-      if (email) {
-        const monthlyIncome = await calculateMonthlyIncome(email) // Call the correct function
+    const fetchIncome = async () => {
+      const monthlyIncome = await calculateMonthlyIncome // Call the correct function
 
-        setMonthlyIncome(monthlyIncome) // Set the fetched income
-        console.log(monthlyIncome)
-      }
+      setMonthlyIncome(monthlyIncome) // Set the fetched income
+      console.log(monthlyIncome)
     }
     fetchIncome(email)
   }, [email])
@@ -117,7 +116,7 @@ const Home = () => {
                     </View>
                   </View>
                 </View>
-                <View className="flex flex-row gap-4 items-center">
+                {/* <View className="flex flex-row gap-4 items-center">
                   <TouchableOpacity
                     onPress={handleBellPress}
                     activeOpacity={0.7}
@@ -128,7 +127,7 @@ const Home = () => {
                       resizeMode="contain"
                     />
                   </TouchableOpacity>
-                </View>
+                </View> */}
               </View>
 
               <View className="flex flex-col justify-center items-center mb-24 h-20 px-4">
@@ -204,7 +203,7 @@ const Home = () => {
                     </View>
 
                     <Text className="text-primary font-pmedium text-xl">
-                      ${monthlyIncome.toFixed(2)}
+                      <TotalIncome />
                     </Text>
                   </View>
 
