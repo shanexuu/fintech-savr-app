@@ -2,6 +2,7 @@
 
 Savr is a cutting-edge fintech mobile application designed to revolutionize personal finance management. By combining advanced technology with user-centric design, Savr empowers individuals to take control of their finances effortlessly. Users can connect their bank accounts, track real-time transactions, set budgets, and monitor their spending—all in one intuitive and visually appealing platform.
 
+Whether you're trying to save for a specific goal, manage daily expenses, or gain deeper insights into your financial habits, Savr is the perfect companion to help you achieve financial freedom.
 
 ---
 
